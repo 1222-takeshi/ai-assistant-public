@@ -1,0 +1,25 @@
+# Claude Code worktrees（実装者用、リポジトリには含めない）
+.claude/worktrees/
+
+# ドラフト・一時ドキュメント
+.tmp/
+
+# 一時ファイル
+.gemini_temp/
+*.tmp
+
+# 環境依存ファイル
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# OS
+.DS_Store
+Thumbs.db
