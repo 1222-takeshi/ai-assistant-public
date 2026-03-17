@@ -1,0 +1,65 @@
+# Notion 設定ファイル
+# セットアップ手順: YOUR_* の値を実際の値に置き換えてください
+
+# Tasks DB の ID（NotionのURL末尾32文字）
+tasks_db_id: "YOUR_TASKS_DB_ID"
+
+# 週次ページ設定
+weekly_pages:
+  root_page_id: "YOUR_WEEKLY_ROOT_PAGE_ID"
+  day_db_title_pattern: "Day {N}"
+
+# プロジェクト名 → Jira プロジェクトキー マッピング
+# Notion の Project プロパティの値を Jira のプロジェクトキーに変換
+project_key_map:
+  "ProjectA": "PRJA"
+  "ProjectB": "PRJB"
+  default: "GENERAL"
+
+# 自動実行設定
+automation:
+  # このタグが付いたタスクは確認なしで Jira 操作を実行
+  auto_jira_tag: "auto-jira"
+  # このタグが付いたタスクは確認なしで Confluence 操作を実行
+  auto_confluence_tag: "auto-confluence"
+  # タイトル・説明のキーワードマッチで Jira 操作候補とみなす（確認プロンプトあり）
+  jira_keywords:
+    - "Jiraチケット作成"
+    - "Jiraチケット更新"
+    - "create jira ticket"
+    - "update jira ticket"
+  # タイトル・説明のキーワードマッチで Confluence 操作候補とみなす（確認プロンプトあり）
+  confluence_keywords:
+    - "Confluenceページ作成"
+    - "Confluenceページ更新"
+    - "create confluence page"
+    - "update confluence page"
+
+# Notion プロパティ名の定義
+# DBのプロパティ名を変更した場合はここを更新
+property_names:
+  status: "Status"
+  priority: "Priority"
+  scheduled_date: "Scheduled Date"
+  due_date: "Due Date"
+  tags: "Tags"
+  project: "Project"
+  source: "Source"
+  source_url: "Source URL"
+  source_id: "Source ID"
+  description: "Description"
+
+# ステータス値のマッピング（NotionのSelect値）
+status_values:
+  todo: "Todo"
+  in_progress: "In Progress"
+  done: "Done"
+  cancelled: "Cancelled"
+  blocked: "Blocked"
+
+# 優先度マッピング（Notion → Jira）
+priority_map:
+  "高": "High"
+  "中": "Medium"
+  "低": "Low"
+  "緊急": "Highest"

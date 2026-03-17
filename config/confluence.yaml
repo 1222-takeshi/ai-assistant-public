@@ -1,0 +1,31 @@
+# Confluence 設定ファイル
+# セットアップ手順: YOUR_* の値を実際の値に置き換えてください
+
+# Atlassian ドメイン（例: mycompany.atlassian.net）
+atlassian_domain: "YOUR_DOMAIN.atlassian.net"
+
+# デフォルトスペースキー（例: PMO, TEAM）
+default_space_key: "YOUR_SPACE_KEY"
+
+# 親ページID の設定
+# ConfluenceページのURLに含まれる数字部分（例: /pages/123456789/）
+parent_pages:
+  # 議事録を格納する親ページID
+  meeting_minutes: "YOUR_MINUTES_PARENT_PAGE_ID"
+  # PMO レポートを格納する親ページID
+  reports: "YOUR_REPORTS_PARENT_PAGE_ID"
+  # PMO ドキュメント（Notionタスクから自動生成）の親ページID
+  pmo_docs: "YOUR_PMO_DOCS_PARENT_PAGE_ID"
+
+# ページタイトルのフォーマット
+# {date}: YYYY-MM-DD 形式の日付
+# {meeting_name}: 会議名
+# {report_name}: レポート名
+title_formats:
+  meeting_minutes: "[議事録] {date} {meeting_name}"
+  pmo_report: "[PMO] {date} {report_name}"
+  daily_summary: "[PMO日次] {date}"
+
+# Slack レポート投稿先チャンネル（/pmo/daily-routine --slack-report 時）
+# チャンネルID または #channel-name 形式
+slack_report_channel: "#pmo-daily"
