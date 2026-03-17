@@ -225,6 +225,7 @@ class TestConfluenceYamlTopLevelKeys:
         "atlassian_domain",
         "default_space_key",
         "parent_pages",
+        "meeting_minutes_map",
         "title_formats",
     }
 
@@ -251,7 +252,7 @@ class TestConfluenceYamlTopLevelKeys:
 
 
 class TestConfluenceYamlParentPages:
-    REQUIRED_PAGES = {"meeting_minutes", "reports", "pmo_docs"}
+    REQUIRED_PAGES = {"pmo_docs"}
 
     @pytest.fixture(scope="class")
     def parent_pages(self):
@@ -270,6 +271,47 @@ class TestConfluenceYamlParentPages:
         non_placeholder = [v for v in parent_pages.values() if not v.startswith("YOUR_")]
         assert len(non_placeholder) == len(set(non_placeholder)), \
             "parent_pages に重複したページIDがあります"
+
+
+class TestConfluenceYamlMeetingMinutesMap:
+    @pytest.fixture(scope="class")
+    def mm_map(self):
+        return load_yaml(CONFLUENCE_YAML)["meeting_minutes_map"]
+
+    def test_is_list(self, mm_map):
+        assert isinstance(mm_map, list), "meeting_minutes_map はリストである必要があります"
+
+    def test_has_at_least_one_entry(self, mm_map):
+        assert len(mm_map) >= 1
+
+    def test_each_entry_has_required_keys(self, mm_map):
+        for i, entry in enumerate(mm_map):
+            assert "keywords" in entry, f"entry[{i}] に keywords がありません"
+            assert "parent_id" in entry, f"entry[{i}] に parent_id がありません"
+
+    def test_keywords_are_lists_of_strings(self, mm_map):
+        for i, entry in enumerate(mm_map):
+            kw = entry["keywords"]
+            assert isinstance(kw, list), f"entry[{i}].keywords はリストである必要があります"
+            for k in kw:
+                assert isinstance(k, str), f"entry[{i}].keywords の要素が文字列でない: {k!r}"
+
+    def test_parent_id_is_non_empty_string(self, mm_map):
+        for i, entry in enumerate(mm_map):
+            pid = entry["parent_id"]
+            assert isinstance(pid, str) and pid.strip() != "", \
+                f"entry[{i}].parent_id が空または非文字列"
+
+    def test_has_default_entry(self, mm_map):
+        default_entries = [e for e in mm_map if "__default__" in e.get("keywords", [])]
+        assert len(default_entries) == 1, \
+            "meeting_minutes_map に __default__ エントリが1つ必要です"
+
+    def test_space_key_is_string_if_present(self, mm_map):
+        for i, entry in enumerate(mm_map):
+            if "space_key" in entry:
+                assert isinstance(entry["space_key"], str) and entry["space_key"].strip() != "", \
+                    f"entry[{i}].space_key が空または非文字列"
 
 
 class TestConfluenceYamlTitleFormats:
@@ -492,6 +534,15 @@ class TestWriteMinutesCommand:
 
     def test_mentions_gmail(self, content):
         assert "gmail" in content.lower() or "Gmail" in content
+
+    def test_mentions_meeting_minutes_map(self, content):
+        assert "meeting_minutes_map" in content
+
+    def test_mentions_copy_from(self, content):
+        assert "copy_from" in content
+
+    def test_mentions_default_fallback(self, content):
+        assert "__default__" in content
 
     def test_mentions_template_file(self, content):
         assert "meeting-minutes.md" in content or "templates" in content
