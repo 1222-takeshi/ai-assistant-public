@@ -23,10 +23,29 @@ spaces:
 parent_pages:
   # PMO ドキュメント（Notionタスクから自動生成）の親ページ = AI Agent ページ
   pmo_docs: "YOUR_PMO_DOCS_PAGE_ID"
-  # 議事録を格納する親ページID（SI または ID スペース内のページIDを設定）
-  meeting_minutes: "YOUR_MINUTES_PARENT_PAGE_ID"
-  # PMO レポートを格納する親ページID（SI または ID スペース内のページIDを設定）
-  reports: "YOUR_REPORTS_PARENT_PAGE_ID"
+
+# 議事録の親ページマッピング（会議ごとに格納先を分ける）
+# キー: GCal イベントタイトルの部分一致キーワード
+# value.parent_id: 既存議事録が格納されている Confluence 親ページID
+# value.space_key: そのページが属するスペース（省略時は default_space_key）
+# value.copy_from: 新規作成時にコピー元とする既存ページID（省略可）
+#
+# 設定方法: 各会議の Confluence 親ページ URL の /pages/数字/ 部分を parent_id に設定
+# 例: https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/SI/pages/123456789/週次定例
+#        → parent_id: "123456789"
+meeting_minutes_map:
+  - keywords: ["週次定例"]
+    parent_id: "YOUR_PAGE_ID"
+    space_key: "SI"
+    copy_from: "YOUR_TEMPLATE_PAGE_ID"  # コピー元の既存議事録ページID
+  - keywords: ["設計レビュー", "design review"]
+    parent_id: "YOUR_PAGE_ID"
+    space_key: "SI"
+    copy_from: "YOUR_TEMPLATE_PAGE_ID"
+  # 上記にマッチしない会議のフォールバック
+  - keywords: ["__default__"]
+    parent_id: "YOUR_DEFAULT_MINUTES_PAGE_ID"
+    space_key: "SI"
 
 # ページタイトルのフォーマット
 # {date}: YYYY-MM-DD 形式の日付
