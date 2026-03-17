@@ -553,8 +553,17 @@ class TestDailyRoutineCommand:
 
 # ===========================================================================
 # .claude/settings.local.json — PMO 権限
+# settings.local.json はグローバル gitignore で管理外のため、
+# CI 環境では存在しない。ファイルが存在する場合のみ実行する。
 # ===========================================================================
 
+_settings_available = pytest.mark.skipif(
+    not SETTINGS_JSON.exists(),
+    reason="settings.local.json はローカル環境のみ存在（git管理外）",
+)
+
+
+@_settings_available
 class TestSettingsLocalJsonExists:
     def test_file_exists(self):
         assert SETTINGS_JSON.exists()
@@ -572,12 +581,15 @@ class TestSettingsLocalJsonExists:
         assert isinstance(data["permissions"]["allow"], list)
 
 
+@_settings_available
 class TestAtlassianPermissions:
     REQUIRED = [
         "mcp__claude_ai_Atlassian__getAccessibleAtlassianResources",
         "mcp__claude_ai_Atlassian__searchJiraIssuesUsingJql",
         "mcp__claude_ai_Atlassian__getJiraIssue",
         "mcp__claude_ai_Atlassian__createJiraIssue",
+        "mcp__claude_ai_Atlassian__updateJiraIssue",
+        "mcp__claude_ai_Atlassian__transitionJiraIssue",
         "mcp__claude_ai_Atlassian__searchConfluenceUsingCql",
         "mcp__claude_ai_Atlassian__getConfluencePage",
         "mcp__claude_ai_Atlassian__createConfluencePage",
@@ -593,6 +605,7 @@ class TestAtlassianPermissions:
         assert perm in allowed, f"権限 '{perm}' が settings.local.json に登録されていません"
 
 
+@_settings_available
 class TestNotionPermissions:
     REQUIRED = [
         "mcp__notion__notion-query-database",
@@ -611,6 +624,7 @@ class TestNotionPermissions:
         assert perm in allowed, f"Notion 権限 '{perm}' が登録されていません"
 
 
+@_settings_available
 class TestGCalPermissions:
     REQUIRED = [
         "mcp__claude_ai_Google_Calendar__gcal_list_events",
@@ -628,6 +642,7 @@ class TestGCalPermissions:
         assert perm in allowed
 
 
+@_settings_available
 class TestGmailPermissions:
     REQUIRED = [
         "mcp__claude_ai_Gmail__gmail_search_messages",
@@ -645,6 +660,7 @@ class TestGmailPermissions:
         assert perm in allowed
 
 
+@_settings_available
 class TestSlackPermissions:
     REQUIRED = [
         "mcp__claude_ai_Slack__slack_search_public_and_private",
@@ -663,6 +679,7 @@ class TestSlackPermissions:
         assert perm in allowed
 
 
+@_settings_available
 class TestBashPermissions:
     @pytest.fixture(scope="class")
     def allowed(self):

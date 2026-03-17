@@ -55,8 +55,8 @@
 自動実行可能なタスクが {n} 件あります。実行しますか？ [Y/n]
 ```
 
-承認された場合: `/pmo/run-tasks` の実行フローを実行
-（内部的に run-tasks と同じ Step 4〜7 を実行）
+承認された場合: `/pmo/run-tasks` をサブコマンドとして呼び出す
+（`/pmo/run-tasks --date {today}` と同等の処理を実行）
 
 ### Step 4: 議事録未作成会議のチェック
 
@@ -100,7 +100,7 @@ GCal の過去会議リストと照合し、議事録が未作成の会議を特
 `--slack-report` フラグがある場合:
 `slack_send_message` で日次サマリーを PMO チャンネルに投稿。
 
-チャンネルは `config/confluence.yaml` の `slack_report_channel` を参照
+チャンネルは `config/notion.yaml` の `slack.report_channel` を参照
 （未設定の場合は投稿先を確認）。
 
 ## 推奨実行タイミング

@@ -26,6 +26,3 @@ title_formats:
   pmo_report: "[PMO] {date} {report_name}"
   daily_summary: "[PMO日次] {date}"
 
-# Slack レポート投稿先チャンネル（/pmo/daily-routine --slack-report 時）
-# チャンネルID または #channel-name 形式
-slack_report_channel: "#pmo-daily"
