@@ -41,8 +41,13 @@ Confluence に議事録ページを自動生成するエージェント。
 3. マッチしない場合は `keywords: ["__default__"]` のエントリを使用
 4. `__default__` もない場合はユーザーに親ページURLを確認
 
-`copy_from` が設定されている場合:
-- `getConfluencePage(copy_from)` で既存ページの構造を取得し、議事録の骨格として使用
+`copy_from` の解決:
+- `"latest"` の場合:
+  1. `getConfluencePage(parent_id)` で子ページ一覧を取得
+  2. 作成日時が最新の子ページIDを特定
+  3. `getConfluencePage(latest_child_id)` で構造を取得し、議事録の骨格として使用
+- 具体的なページIDの場合: `getConfluencePage(copy_from)` で構造を取得
+- 省略の場合: `templates/meeting-minutes.md` を骨格として使用
 
 ### Step 4: Slack スレッドの検索・収集
 

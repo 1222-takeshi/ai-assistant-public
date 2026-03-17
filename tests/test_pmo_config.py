@@ -307,11 +307,29 @@ class TestConfluenceYamlMeetingMinutesMap:
         assert len(default_entries) == 1, \
             "meeting_minutes_map に __default__ エントリが1つ必要です"
 
+    def test_copy_from_is_valid_if_present(self, mm_map):
+        for i, entry in enumerate(mm_map):
+            if "copy_from" not in entry:
+                continue
+            val = entry["copy_from"]
+            is_latest = val == "latest"
+            is_page_id = isinstance(val, str) and val.strip() != "" and not val.startswith("YOUR_")
+            is_placeholder = isinstance(val, str) and val.startswith("YOUR_")
+            assert is_latest or is_page_id or is_placeholder, \
+                f"entry[{i}].copy_from は 'latest'・ページID・プレースホルダーのいずれかである必要があります: {val!r}"
+
     def test_space_key_is_string_if_present(self, mm_map):
         for i, entry in enumerate(mm_map):
             if "space_key" in entry:
                 assert isinstance(entry["space_key"], str) and entry["space_key"].strip() != "", \
                     f"entry[{i}].space_key が空または非文字列"
+
+    def test_latest_copy_from_entries_use_numeric_parent_id(self, mm_map):
+        for i, entry in enumerate(mm_map):
+            if entry.get("copy_from") == "latest":
+                pid = entry["parent_id"]
+                assert pid.isdigit() or not pid.startswith("YOUR_"), \
+                    f"entry[{i}]: copy_from=latest なのに parent_id が未設定: {pid!r}"
 
 
 class TestConfluenceYamlTitleFormats:
