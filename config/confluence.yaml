@@ -1,21 +1,32 @@
 # Confluence 設定ファイル
-# セットアップ手順: YOUR_* の値を実際の値に置き換えてください
 
-# Atlassian ドメイン（例: mycompany.atlassian.net）
-atlassian_domain: "YOUR_DOMAIN.atlassian.net"
+# Atlassian ドメイン
+atlassian_domain: "YOUR_ATLASSIAN_DOMAIN"
 
-# デフォルトスペースキー（例: PMO, TEAM）
-default_space_key: "YOUR_SPACE_KEY"
+# デフォルトスペースキー（Notionタスクから自動生成する際のデフォルト）
+default_space_key: "SI"
+
+# 利用可能なスペース一覧
+spaces:
+  - key: "SI"
+    name: "SI スペース"
+    url: "https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/SI/overview"
+  - key: "ID"
+    name: "ID スペース"
+    url: "https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/ID/overview"
+  - key: "YOUR_PERSONAL_SPACE_KEY"
+    name: "個人スペース（AI Agent）"
+    url: "https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/YOUR_PERSONAL_SPACE_KEY/overview"
 
 # 親ページID の設定
 # ConfluenceページのURLに含まれる数字部分（例: /pages/123456789/）
 parent_pages:
-  # 議事録を格納する親ページID
+  # PMO ドキュメント（Notionタスクから自動生成）の親ページ = AI Agent ページ
+  pmo_docs: "YOUR_PMO_DOCS_PAGE_ID"
+  # 議事録を格納する親ページID（SI または ID スペース内のページIDを設定）
   meeting_minutes: "YOUR_MINUTES_PARENT_PAGE_ID"
-  # PMO レポートを格納する親ページID
+  # PMO レポートを格納する親ページID（SI または ID スペース内のページIDを設定）
   reports: "YOUR_REPORTS_PARENT_PAGE_ID"
-  # PMO ドキュメント（Notionタスクから自動生成）の親ページID
-  pmo_docs: "YOUR_PMO_DOCS_PARENT_PAGE_ID"
 
 # ページタイトルのフォーマット
 # {date}: YYYY-MM-DD 形式の日付
@@ -25,4 +36,3 @@ title_formats:
   meeting_minutes: "[議事録] {date} {meeting_name}"
   pmo_report: "[PMO] {date} {report_name}"
   daily_summary: "[PMO日次] {date}"
-
