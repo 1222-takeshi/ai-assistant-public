@@ -18,12 +18,16 @@ ai-assistant/
 ├── scripts/
 │   ├── gh-workflow.sh          # push / PR / Issue 操作ヘルパー
 │   ├── setup-worktree.sh       # worktree 作成ヘルパー
+│   ├── worktree-cleanup.sh     # stale worktree の整理と残骸チェック
 │   └── list-worktrees.sh       # worktree 一覧表示
 └── .claude/
+    ├── team-topology.yaml      # 開発チームの役割・レーン・handoff の source of truth
     ├── settings.local.json     # MCPツール権限設定
     ├── worktrees/              # 実装者用 worktree（git管理外）
     └── commands/
         └── dev/
+            ├── start-team.md   # /dev/start-team
+            ├── status.md       # /dev/status
             ├── orchestrate.md  # /dev/orchestrate
             ├── research.md     # /dev/research
             ├── define-requirements.md  # /dev/define-requirements
@@ -37,6 +41,8 @@ ai-assistant/
 
 | コマンド | 用途 |
 |---------|------|
+| `/dev/start-team` | Claude Code のコンテキスト確認・日次起動・担当レーン割り当て |
+| `/dev/status` | チームの稼働状況・ブロッカー・review待ちを可視化 |
 | `/dev/orchestrate` | 全エージェント状態俯瞰・開発着手判断・PRマージ判断 |
 | `/dev/research` | 技術調査・成果物をGitHub Issueに記録 |
 | `/dev/define-requirements` | 要件定義・テスト仕様設計・実装依頼発行 |
@@ -50,6 +56,13 @@ Orchestrator (1名)
   ├─→ Requirements Analyst (1名) → Reviewer → Implementer x2
   └─→ Researcher x2 (常時稼働・調査サポート)
 ```
+
+### 運用の source of truth
+
+- `CLAUDE.md`: 全体方針、ラベル、基本ルール
+- `.claude/team-topology.yaml`: ロール定義、担当レーン、worktree、handoff
+- `/dev/start-team`: 起動時の入口
+- `/dev/status`: 稼働状況の可視化
 
 ### git worktree 戦略
 

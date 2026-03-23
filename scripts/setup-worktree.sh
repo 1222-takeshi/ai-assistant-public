@@ -3,9 +3,11 @@
 # 使用例: ./scripts/setup-worktree.sh impl-1 feat/my-feature
 # 前提: リポジトリルートで実行し、main が最新であること。
 
-set -e
+set -euo pipefail
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 cd "$REPO_ROOT"
+
+"${REPO_ROOT}/scripts/worktree-cleanup.sh"
 
 if [ -n "$1" ] && [ -n "$2" ]; then
   WT_NAME="$1"
@@ -20,6 +22,16 @@ fi
 
 WT_DIR="${REPO_ROOT}/.claude/worktrees/${WT_NAME}"
 mkdir -p "$(dirname "$WT_DIR")"
+
+if [ -e "$WT_DIR" ]; then
+  echo "Error: worktree directory already exists: $WT_DIR" >&2
+  exit 1
+fi
+
+if git show-ref --verify --quiet "refs/heads/${BRANCH}"; then
+  echo "Error: branch already exists locally: $BRANCH" >&2
+  exit 1
+fi
 
 git fetch origin main
 git worktree add "$WT_DIR" -b "$BRANCH" origin/main
