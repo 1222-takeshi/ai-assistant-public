@@ -1,8 +1,12 @@
 team:
   name: "ai-assistant development team"
-  mission: "Claude Code 上で調査・要件化・実装・レビューを並列運用する"
+  mission: "Claude Code 上で core の dev workflow を調査・要件化・実装・レビューする"
   entrypoint: "/dev/start-team"
   status_command: "/dev/status"
+  product_boundary:
+    core: "dev workflow"
+    optional_profiles:
+      - "pmo"
   source_of_truth:
     - "CLAUDE.md"
     - ".claude/team-topology.yaml"

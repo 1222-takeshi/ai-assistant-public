@@ -43,6 +43,7 @@ def public_text_files() -> list[Path]:
         REPO_ROOT / ".claude" / "team-topology.yaml",
     ]
     files.extend(sorted((REPO_ROOT / ".claude" / "commands").rglob("*.md")))
+    files.extend(sorted((REPO_ROOT / "docs").glob("*.md")))
     return files
 
 
@@ -62,6 +63,7 @@ def numeric_id_sensitive_files() -> list[Path]:
         NOTION_EXAMPLE,
         CONFLUENCE_EXAMPLE,
         REPO_ROOT / ".claude" / "team-topology.yaml",
+        REPO_ROOT / "docs" / "pmo-profile.md",
     ]
 
 

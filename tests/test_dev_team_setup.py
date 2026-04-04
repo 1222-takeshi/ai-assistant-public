@@ -24,6 +24,7 @@ WORKTREE_CLEANUP = REPO_ROOT / "scripts" / "worktree-cleanup.sh"
 WORKTREE_SETUP = REPO_ROOT / "scripts" / "setup-worktree.sh"
 CLAUDE_MD = REPO_ROOT / "CLAUDE.md"
 README_MD = REPO_ROOT / "README.md"
+PMO_PROFILE_DOC = REPO_ROOT / "docs" / "pmo-profile.md"
 
 
 def load_yaml(path: Path) -> dict:
@@ -43,6 +44,12 @@ class TestTeamTopologyFile:
         data = load_yaml(TEAM_TOPOLOGY)
         required = {"team", "roles", "labels", "worktrees", "handoffs"}
         assert required.issubset(data), f"必須キー不足: {required - set(data)}"
+
+    def test_team_topology_declares_core_boundary(self):
+        data = load_yaml(TEAM_TOPOLOGY)
+        boundary = data["team"]["product_boundary"]
+        assert boundary["core"] == "dev workflow"
+        assert "pmo" in boundary["optional_profiles"]
 
 
 class TestTeamTopologyRoles:
@@ -206,3 +213,27 @@ class TestDocumentation:
         content = README_MD.read_text(encoding="utf-8")
         assert "/dev/start-team" in content
         assert "/dev/status" in content
+
+    def test_readme_separates_core_and_optional(self):
+        content = README_MD.read_text(encoding="utf-8")
+        assert "Core Workflow" in content
+        assert "Optional PMO Profile" in content
+
+    def test_claude_separates_core_and_optional(self):
+        content = CLAUDE_MD.read_text(encoding="utf-8")
+        assert "core は `dev` workflow" in content
+        assert "optional profile" in content
+
+    def test_quickstart_does_not_require_pmo(self):
+        content = README_MD.read_text(encoding="utf-8")
+        quickstart = content.split("## Quickstart", maxsplit=1)[1].split("## Development Team Workflow", maxsplit=1)[0]
+        for forbidden in ("Notion MCP", "Atlassian MCP", "Google Calendar MCP", "Slack MCP", "Gmail MCP"):
+            assert forbidden not in quickstart
+
+    def test_pmo_profile_doc_exists(self):
+        assert PMO_PROFILE_DOC.exists(), "docs/pmo-profile.md が存在しません"
+
+    def test_pmo_profile_doc_is_opt_in(self):
+        content = PMO_PROFILE_DOC.read_text(encoding="utf-8")
+        assert "optional profile" in content
+        assert "core" in content

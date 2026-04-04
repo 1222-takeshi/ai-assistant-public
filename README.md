@@ -1,9 +1,12 @@
 # ai-assistant
 
 Claude Code / Codex 向けのマルチエージェント運用テンプレートです。  
-開発チームの役割分担、`git worktree` ベースの並列開発、PMO 連携コマンドのたたき台を含みます。
+この OSS の core は、GitHub Issue 駆動の開発チーム workflow と `git worktree` ベースの並列開発です。  
+PMO 連携は optional profile として分離し、core Quickstart には含めません。
 
 ## What This Repository Provides
+
+### Core Workflow
 
 - 開発チーム用のカスタムコマンド群
   - `/dev/start-team`
@@ -15,7 +18,11 @@ Claude Code / Codex 向けのマルチエージェント運用テンプレート
   - `/dev/review`
 - `.claude/team-topology.yaml` による役割・レーン・handoff の定義
 - `scripts/setup-worktree.sh` を中心とした worktree 運用補助
+
+### Optional PMO Profile
+
 - Notion / Jira / Confluence / Slack / Gmail 連携を前提にした PMO コマンドテンプレート
+- 詳細は [docs/pmo-profile.md](docs/pmo-profile.md)
 
 ## Repository Layout
 
@@ -29,6 +36,7 @@ ai-assistant/
 ├── config/
 │   ├── notion.yaml
 │   └── confluence.yaml
+├── docs/
 ├── scripts/
 ├── templates/
 └── tests/
@@ -37,27 +45,21 @@ ai-assistant/
 ## Quickstart
 
 1. Python 3.11 以降を用意する
-2. 依存を入れる
+2. `gh` と `git` を使える状態にする
+3. 依存を入れる
 
 ```bash
 python -m pip install -r requirements-dev.txt
 ```
 
-3. テストを実行する
+4. テストを実行する
 
 ```bash
 pytest tests/ -v -p no:cacheprovider
 ```
 
-4. `config/*.yaml` は public-safe なテンプレートとして扱い、実値は `config/*.local.yaml` のような未追跡ファイルに置く
-5. もし config を分離運用するなら、`config/notion.example.yaml` と `config/confluence.example.yaml` をコピー元にする
-6. 利用する MCP / CLI を接続する
-   - `gh`
-   - Notion MCP
-   - Atlassian MCP
-   - Google Calendar MCP
-   - Slack MCP
-   - Gmail MCP
+5. `.claude/team-topology.yaml` と `/dev/start-team` を source of truth として開発フローを開始する
+6. PMO profile が必要な場合だけ [docs/pmo-profile.md](docs/pmo-profile.md) を参照する
 
 ## Development Team Workflow
 
@@ -78,14 +80,16 @@ worktree 作成前は `scripts/worktree-cleanup.sh` で stale metadata を prune
 ./scripts/list-worktrees.sh
 ```
 
-## PMO Commands
+## Optional PMO Profile
 
-PMO 関連のコマンドはそのままでは動きません。  
-`config/` の設定と外部サービス接続を行った上で、自身のワークフローに合わせて調整してください。
+PMO 関連のコマンドは optional profile です。  
+core workflow を使うだけなら設定不要です。使う場合だけ `config/` と外部サービス接続を準備してください。
 
 - `/pmo/run-tasks`
 - `/pmo/write-minutes`
 - `/pmo/daily-routine`
+
+詳細は [docs/pmo-profile.md](docs/pmo-profile.md) を参照してください。
 
 ## Making This Template Your Own
 
@@ -93,6 +97,7 @@ PMO 関連のコマンドはそのままでは動きません。
 - `config/` の YAML は配布用テンプレートです。実運用値は `*.local.yaml` などの未追跡ファイルに分離してください
 - `example` と `local override` の2段構えにするなら、`*.example.yaml` をコミット対象、`*.local.yaml` を ignored にするのが安全です
 - `.claude/team-topology.yaml` の role / lane / worktree 名はそのままでも、チーム運用に合わせて変更しても構いません
+- PMO を使わない利用者は `docs/pmo-profile.md` を無視して構いません
 
 ## OSS Metadata
 
@@ -101,3 +106,4 @@ PMO 関連のコマンドはそのままでは動きません。
 - Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - Security: [SECURITY.md](SECURITY.md)
 - Release Checklist: [docs/public-release-checklist.md](docs/public-release-checklist.md)
+- PMO Profile: [docs/pmo-profile.md](docs/pmo-profile.md)

@@ -1,12 +1,14 @@
 # ai-assistant
 
-Claude Code を中心とした AI アシスタント運用テンプレート。
+Claude Code を中心とした AI アシスタント運用テンプレート。  
+このリポジトリの core は `dev` workflow です。PMO 機能は optional profile として扱います。
 
 ## プロジェクト概要
 
 - **目的**: Claude Code / MCP ツールを活用した開発・運用フローのテンプレート化
 - **アーキテクチャ**: マルチエージェント開発フロー
 - **設計方針**: GitHub Issue 駆動・`git worktree` による並列開発
+- **プロダクト境界**: `dev` は core、`pmo` は opt-in profile
 
 ## ディレクトリ構成
 
@@ -31,7 +33,7 @@ ai-assistant/
 
 ## カスタムコマンド一覧
 
-### 機能開発（dev/）
+### Core Workflow（dev/）
 
 | コマンド | 用途 |
 |---------|------|
@@ -43,13 +45,15 @@ ai-assistant/
 | `/dev/implement` | GitHub Issue から実装・PR 作成 |
 | `/dev/review` | 要件・設計・テスト仕様・PR の多段レビュー |
 
-### PMO（pmo/）
+### Optional Profile（pmo/）
 
 | コマンド | 用途 |
 |---------|------|
 | `/pmo/run-tasks` | Notion タスクを読み込み Jira / Confluence を自動実行 |
 | `/pmo/write-minutes` | GCal + Slack + Gmail から議事録の草案を生成 |
 | `/pmo/daily-routine` | 毎朝ルーティン（確認→自動実行→日次レポート） |
+
+PMO の詳細は `docs/pmo-profile.md` を参照すること。core workflow の開始条件には含めない。
 
 ## マルチエージェント開発アーキテクチャ
 
@@ -65,6 +69,8 @@ Orchestrator (1名)
 - `.claude/team-topology.yaml`: ロール定義、担当レーン、worktree、handoff
 - `/dev/start-team`: 起動時の入口
 - `/dev/status`: 稼働状況の可視化
+
+PMO profile は補助的な opt-in profile であり、上記 source of truth を置き換えない。
 
 ### git worktree 戦略
 
@@ -109,7 +115,7 @@ Orchestrator (1名)
 
 ## PMO テンプレートの前提
 
-PMO 機能は外部サービスの接続が前提です。
+PMO 機能は optional profile であり、外部サービスの接続が前提です。
 
 - Notion MCP
 - Atlassian MCP
@@ -128,7 +134,8 @@ PMO 機能は外部サービスの接続が前提です。
 
 ### セットアップ手順
 
-1. 必要な MCP / CLI を追加する
-2. `config/notion.yaml` を直接編集せず、`config/notion.local.yaml` などの未追跡ファイルに実値を置く
-3. `config/confluence.yaml` も同様に `config/confluence.local.yaml` へ分離する
-4. `/pmo/run-tasks --dry-run` で接続確認する
+1. core workflow を使う場合は、このセクションを読まずに `README.md` の Quickstart に従う
+2. PMO profile を使う場合だけ必要な MCP / CLI を追加する
+3. `config/notion.yaml` を直接編集せず、`config/notion.local.yaml` などの未追跡ファイルに実値を置く
+4. `config/confluence.yaml` も同様に `config/confluence.local.yaml` へ分離する
+5. `/pmo/run-tasks --dry-run` で接続確認する
