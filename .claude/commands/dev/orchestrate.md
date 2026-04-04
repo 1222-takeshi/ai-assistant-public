@@ -13,20 +13,22 @@
 
 ## 実行手順
 
+以下では必要に応じて `REPO="${GH_REPO:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}"` を事前に設定する。
+
 ### 1. 現状把握
 
 ```bash
 # 全Issueの一覧（ラベル付き）
-gh issue list --repo YOUR_ORG/YOUR_REPO --state open
+gh issue list --repo "$REPO" --state open
 
 # 全PRの一覧
-gh pr list --repo YOUR_ORG/YOUR_REPO --state open
+gh pr list --repo "$REPO" --state open
 
 # ラベル別Issue確認
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "review-needed"
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "requirements"
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "implementation"
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "blocked"
+gh issue list --repo "$REPO" --label "review-needed"
+gh issue list --repo "$REPO" --label "requirements"
+gh issue list --repo "$REPO" --label "implementation"
+gh issue list --repo "$REPO" --label "blocked"
 ```
 
 ### 2. 優先度付け
@@ -55,12 +57,12 @@ PRマージの前に以下を確認する:
 - [ ] CIがpassしているか
 
 ```bash
-gh pr checks <PR番号> --repo YOUR_ORG/YOUR_REPO
+gh pr checks <PR番号> --repo "$REPO"
 ```
 
 OKであれば以下でマージ:
 ```bash
-gh pr merge <PR番号> --repo YOUR_ORG/YOUR_REPO --squash
+gh pr merge <PR番号> --repo "$REPO" --squash
 ```
 
 ### 5. 状態レポート出力

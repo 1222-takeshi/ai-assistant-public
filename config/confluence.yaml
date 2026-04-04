@@ -1,26 +1,23 @@
 # Confluence 設定ファイル
+# OSS 配布用の public-safe テンプレートです。
+# 実運用ではこのファイルを直接編集せず、config/confluence.local.yaml などのローカル専用ファイルへ
+# コピーして管理することを推奨します。
 
 # Atlassian ドメイン
 atlassian_domain: "YOUR_ATLASSIAN_DOMAIN"
 
-# デフォルトスペースキー（Notionタスクから自動生成する際のデフォルト）
-default_space_key: "SI"
+# デフォルトスペースキー（Notion タスクから自動生成する際のデフォルト）
+default_space_key: "YOUR_SPACE_KEY"
 
 # 利用可能なスペース一覧
 spaces:
-  - key: "SI"
-    name: "SI スペース"
-    url: "https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/SI/overview"
-  - key: "ID"
-    name: "ID スペース"
-    url: "https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/ID/overview"
-  - key: "YOUR_PERSONAL_SPACE_KEY"
-    name: "個人スペース（AI Agent）"
-    url: "https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/YOUR_PERSONAL_SPACE_KEY/overview"
+  - key: "YOUR_SPACE_KEY"
+    name: "Primary Space"
+    url: "https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/YOUR_SPACE_KEY/overview"
 
 # 親ページID の設定
 parent_pages:
-  # PMO ドキュメント（Notionタスクから自動生成）の親ページ = AI Agent ページ
+  # PMO ドキュメント（Notion タスクから自動生成）の親ページ
   pmo_docs: "YOUR_PMO_DOCS_PAGE_ID"
 
 # 議事録の親ページマッピング（会議ごとに格納先を分ける）
@@ -35,35 +32,15 @@ parent_pages:
 #                  省略 → templates/meeting-minutes.md を使用
 #
 meeting_minutes_map:
-  - keywords: ["Project sync", "プロジェクトシンク", "project sync"]
-    parent_id: "YOUR_MEETING_PARENT_PAGE_ID_1"
-    space_key: "SI"
-    copy_from: "latest"
-
-  - keywords: ["閉鎖空間先行開発", "閉鎖空間", "sprint会議"]
-    parent_id: "YOUR_MEETING_PARENT_PAGE_ID_2"
-    space_key: "SI"
-    copy_from: "latest"
-
-  - keywords: ["プロジェクト開発効率化", "開発効率化", "AWSIM"]
-    parent_id: "YOUR_MEETING_PARENT_PAGE_ID_3"
-    space_key: "SI"
-    copy_from: "latest"
-
-  - keywords: ["スプリントプランニング", "スプリントレビュー", "Sprint Planning", "Sprint Review"]
-    parent_id: "YOUR_MEETING_PARENT_PAGE_ID_4"
-    space_key: "SI"
-    copy_from: "latest"
-
-  - keywords: ["Daily Scrum", "デイリースクラム", "daily scrum"]
-    parent_id: "YOUR_MEETING_PARENT_PAGE_ID_5"
-    space_key: "SI"
-    copy_from: "latest"
+  - keywords: ["Weekly Sync", "Sprint Review", "Project Update"]
+    parent_id: "YOUR_TEAM_MEETING_PARENT_PAGE_ID"
+    space_key: "YOUR_SPACE_KEY"
+    copy_from: "YOUR_TEMPLATE_PAGE_ID"
 
   # 上記にマッチしない会議のフォールバック（pmo_docs 配下に作成）
   - keywords: ["__default__"]
     parent_id: "YOUR_PMO_DOCS_PAGE_ID"
-    space_key: "YOUR_PERSONAL_SPACE_KEY"
+    space_key: "YOUR_SPACE_KEY"
 
 # ページタイトルのフォーマット
 # {date}: YYYY-MM-DD 形式の日付

@@ -1,7 +1,9 @@
 # Notion 設定ファイル
-# セットアップ手順: YOUR_* の値を実際の値に置き換えてください
+# OSS 配布用の public-safe テンプレートです。
+# 実運用ではこのファイルを直接編集せず、config/notion.local.yaml などのローカル専用ファイルへ
+# コピーして管理することを推奨します。
 
-# Tasks DB の ID（NotionのURL末尾32文字）
+# Tasks DB の ID（Notion の URL 末尾 32 文字）
 tasks_db_id: "YOUR_TASKS_DB_ID"
 
 # 週次ページ設定
@@ -61,7 +63,7 @@ status_values:
 slack:
   # 日次レポート投稿先チャンネル（/pmo/daily-routine --slack-report 時）
   # チャンネルID または #channel-name 形式
-  report_channel: "#pmo-daily"
+  report_channel: "#your-team-channel"
 
 # 優先度マッピング（Notion → Jira）
 priority_map:

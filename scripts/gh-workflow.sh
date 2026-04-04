@@ -9,14 +9,40 @@
 #   ./scripts/gh-workflow.sh issue --title "feat: plan" --body-file .gemini_temp/issue_body.md --label "requirements"
 
 set -e
-REPO="YOUR_ORG/YOUR_REPO"
+
+resolve_repo() {
+  if [ -n "${GH_REPO:-}" ]; then
+    printf '%s\n' "$GH_REPO"
+    return 0
+  fi
+
+  if command -v gh >/dev/null 2>&1; then
+    repo="$(gh repo view --json nameWithOwner -q .nameWithOwner 2>/dev/null || true)"
+    if [ -n "$repo" ]; then
+      printf '%s\n' "$repo"
+      return 0
+    fi
+  fi
+
+  remote_url="$(git remote get-url origin 2>/dev/null || true)"
+  if [ -n "$remote_url" ]; then
+    repo="$(printf '%s\n' "$remote_url" | sed -E 's#(git@github.com:|https://github.com/)##; s#\.git$##')"
+    if [ -n "$repo" ]; then
+      printf '%s\n' "$repo"
+      return 0
+    fi
+  fi
+
+  echo "Error: repository could not be resolved. Set GH_REPO or pass --repo." >&2
+  exit 1
+}
 
 usage() {
   cat >&2 << 'EOF'
 Usage:
   gh-workflow.sh push -b <branch>
-  gh-workflow.sh pr   --title <title> --body-file <file> [--label <label>]
-  gh-workflow.sh issue --title <title> --body-file <file> [--label <label>]
+  gh-workflow.sh pr   [--repo <owner/repo>] --title <title> --body-file <file> [--label <label>]
+  gh-workflow.sh issue [--repo <owner/repo>] --title <title> --body-file <file> [--label <label>]
 EOF
   exit 1
 }
@@ -40,11 +66,13 @@ case "$COMMAND" in
     ;;
 
   pr)
+    REPO=""
     TITLE=""
     BODY_FILE=""
     LABEL=""
     while [[ $# -gt 0 ]]; do
       case "$1" in
+        --repo)      REPO="$2";      shift 2 ;;
         --title)     TITLE="$2";     shift 2 ;;
         --body-file) BODY_FILE="$2"; shift 2 ;;
         --label)     LABEL="$2";     shift 2 ;;
@@ -54,6 +82,9 @@ case "$COMMAND" in
     if [ -z "$TITLE" ] || [ -z "$BODY_FILE" ]; then
       echo "Error: --title and --body-file are required" >&2
       usage
+    fi
+    if [ -z "$REPO" ]; then
+      REPO="$(resolve_repo)"
     fi
     EXTRA_ARGS=()
     if [ -n "$LABEL" ]; then
@@ -67,11 +98,13 @@ case "$COMMAND" in
     ;;
 
   issue)
+    REPO=""
     TITLE=""
     BODY_FILE=""
     LABEL=""
     while [[ $# -gt 0 ]]; do
       case "$1" in
+        --repo)      REPO="$2";      shift 2 ;;
         --title)     TITLE="$2";     shift 2 ;;
         --body-file) BODY_FILE="$2"; shift 2 ;;
         --label)     LABEL="$2";     shift 2 ;;
@@ -81,6 +114,9 @@ case "$COMMAND" in
     if [ -z "$TITLE" ] || [ -z "$BODY_FILE" ]; then
       echo "Error: --title and --body-file are required" >&2
       usage
+    fi
+    if [ -z "$REPO" ]; then
+      REPO="$(resolve_repo)"
     fi
     EXTRA_ARGS=()
     if [ -n "$LABEL" ]; then

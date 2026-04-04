@@ -1,0 +1,27 @@
+# Confluence 設定ファイルの example
+# 実運用ではこのファイルをコピーしてローカル専用の設定として管理してください。
+
+atlassian_domain: "YOUR_ATLASSIAN_DOMAIN"
+default_space_key: "YOUR_SPACE_KEY"
+
+spaces:
+  - key: "YOUR_SPACE_KEY"
+    name: "Primary Space"
+    url: "https://YOUR_ATLASSIAN_DOMAIN/wiki/spaces/YOUR_SPACE_KEY/overview"
+
+parent_pages:
+  pmo_docs: "YOUR_PMO_DOCS_PAGE_ID"
+
+meeting_minutes_map:
+  - keywords: ["Weekly Sync", "Sprint Review", "Project Update"]
+    parent_id: "YOUR_TEAM_MEETING_PARENT_PAGE_ID"
+    space_key: "YOUR_SPACE_KEY"
+    copy_from: "YOUR_TEMPLATE_PAGE_ID"
+  - keywords: ["__default__"]
+    parent_id: "YOUR_PMO_DOCS_PAGE_ID"
+    space_key: "YOUR_SPACE_KEY"
+
+title_formats:
+  meeting_minutes: "[議事録] {date} {meeting_name}"
+  pmo_report: "[PMO] {date} {report_name}"
+  daily_summary: "[PMO日次] {date}"

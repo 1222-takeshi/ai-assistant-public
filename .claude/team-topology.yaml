@@ -88,8 +88,8 @@ labels:
 
 worktrees:
   management:
-    path: "/mnt/takeshi/hdd/workspace/ai-assistant"
-    purpose: "Orchestrator と Reviewer が参照専用に使う管理リポジトリ"
+    path: "."
+    purpose: "Orchestrator と Reviewer が参照用に使う管理リポジトリ"
   req-1:
     path: ".claude/worktrees/req-1"
     branch_prefix: "feat/requirements-"

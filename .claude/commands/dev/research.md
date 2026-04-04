@@ -12,11 +12,13 @@
 
 ## 実行手順
 
+以下では必要に応じて `REPO="${GH_REPO:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}"` を事前に設定する。
+
 ### 1. 調査テーマの確認
 
 まず既存の調査Issueを確認する:
 ```bash
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "research" --state open
+gh issue list --repo "$REPO" --label "research" --state open
 ```
 
 調査テーマが指定されていない場合は、Orchestratorに確認する。
@@ -38,7 +40,7 @@ gh issue list --repo YOUR_ORG/YOUR_REPO --label "research" --state open
 
 ```bash
 gh issue create \
-  --repo YOUR_ORG/YOUR_REPO \
+  --repo "$REPO" \
   --title "research: {調査テーマ}" \
   --label "research" \
   --body "$(cat <<'EOF'

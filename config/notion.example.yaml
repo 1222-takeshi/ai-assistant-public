@@ -1,0 +1,57 @@
+# Notion 設定ファイルの example
+# 実運用ではこのファイルをコピーしてローカル専用の設定として管理してください。
+
+# Tasks DB の ID（Notion の URL 末尾 32 文字）
+tasks_db_id: "YOUR_TASKS_DB_ID"
+
+# 週次ページ設定
+weekly_pages:
+  root_page_id: "YOUR_WEEKLY_ROOT_PAGE_ID"
+  day_db_title_pattern: "Day {N}"
+
+project_key_map:
+  "ProjectA": "PRJA"
+  "ProjectB": "PRJB"
+  default: "GENERAL"
+
+automation:
+  auto_jira_tag: "auto-jira"
+  auto_confluence_tag: "auto-confluence"
+  jira_keywords:
+    - "Jiraチケット作成"
+    - "Jiraチケット更新"
+    - "create jira ticket"
+    - "update jira ticket"
+  confluence_keywords:
+    - "Confluenceページ作成"
+    - "Confluenceページ更新"
+    - "create confluence page"
+    - "update confluence page"
+
+property_names:
+  status: "Status"
+  priority: "Priority"
+  scheduled_date: "Scheduled Date"
+  due_date: "Due Date"
+  tags: "Tags"
+  project: "Project"
+  source: "Source"
+  source_url: "Source URL"
+  source_id: "Source ID"
+  description: "Description"
+
+status_values:
+  todo: "Todo"
+  in_progress: "In Progress"
+  done: "Done"
+  cancelled: "Cancelled"
+  blocked: "Blocked"
+
+slack:
+  report_channel: "#your-team-channel"
+
+priority_map:
+  "高": "High"
+  "中": "Medium"
+  "低": "Low"
+  "緊急": "Highest"

@@ -42,25 +42,27 @@
 
 ## 実行手順
 
+以下では必要に応じて `REPO="${GH_REPO:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}"` を事前に設定する。
+
 ### 1. レビュー対象の確認
 
 ```bash
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "review-needed" --state open
-gh pr list --repo YOUR_ORG/YOUR_REPO --label "review-needed" --state open
+gh issue list --repo "$REPO" --label "review-needed" --state open
+gh pr list --repo "$REPO" --label "review-needed" --state open
 ```
 
 ### 2. 要件Issueのレビュー
 
 ```bash
-gh issue view #{issue_number} --repo YOUR_ORG/YOUR_REPO
+gh issue view #{issue_number} --repo "$REPO"
 ```
 
 ### 3. PRのレビュー
 
 ```bash
-gh pr view #{pr_number} --repo YOUR_ORG/YOUR_REPO
-gh pr diff #{pr_number} --repo YOUR_ORG/YOUR_REPO
-gh pr checks #{pr_number} --repo YOUR_ORG/YOUR_REPO
+gh pr view #{pr_number} --repo "$REPO"
+gh pr diff #{pr_number} --repo "$REPO"
+gh pr checks #{pr_number} --repo "$REPO"
 ```
 
 ### 4. レビュー結果の出力
@@ -101,12 +103,12 @@ gh pr checks #{pr_number} --repo YOUR_ORG/YOUR_REPO
 ```bash
 # Issueへのコメント
 gh issue comment #{issue_number} \
-  --repo YOUR_ORG/YOUR_REPO \
+  --repo "$REPO" \
   --body "{レビュー結果}"
 
 # PRへのコメント
 gh pr review #{pr_number} \
-  --repo YOUR_ORG/YOUR_REPO \
+  --repo "$REPO" \
   --request-changes \
   --body "{レビュー結果}"
 ```
@@ -116,17 +118,17 @@ gh pr review #{pr_number} \
 ```bash
 # Issueの場合
 gh issue edit #{issue_number} \
-  --repo YOUR_ORG/YOUR_REPO \
+  --repo "$REPO" \
   --remove-label "review-needed" \
   --add-label "approved"
 
 # PRの場合
 gh pr review #{pr_number} \
-  --repo YOUR_ORG/YOUR_REPO \
+  --repo "$REPO" \
   --approve \
   --body "{レビュー結果}"
 gh pr edit #{pr_number} \
-  --repo YOUR_ORG/YOUR_REPO \
+  --repo "$REPO" \
   --remove-label "review-needed" \
   --add-label "approved"
 ```

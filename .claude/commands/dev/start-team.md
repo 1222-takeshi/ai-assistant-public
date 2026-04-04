@@ -23,13 +23,15 @@
 
 ## 実行フロー
 
+以下では必要に応じて `REPO="${GH_REPO:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}"` を事前に設定する。
+
 ### 1. コンテキスト確認
 
 以下で現状を把握する:
 
 ```bash
-gh issue list --repo YOUR_ORG/YOUR_REPO --state open
-gh pr list --repo YOUR_ORG/YOUR_REPO --state open
+gh issue list --repo "$REPO" --state open
+gh pr list --repo "$REPO" --state open
 git worktree list
 ```
 

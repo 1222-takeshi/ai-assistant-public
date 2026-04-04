@@ -13,15 +13,17 @@ GitHub Issueの開発依頼を受け取って実装し、PRを作成します。
 
 ## 実行手順
 
+以下では必要に応じて `REPO="${GH_REPO:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}"` を事前に設定する。
+
 ### 1. 担当Issueの確認
 
 ```bash
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "implementation" --state open
+gh issue list --repo "$REPO" --label "implementation" --state open
 ```
 
 担当するIssueを選択し、内容を確認する:
 ```bash
-gh issue view #{issue_number} --repo YOUR_ORG/YOUR_REPO
+gh issue view #{issue_number} --repo "$REPO"
 ```
 
 ### 2. worktreeのセットアップ
@@ -38,7 +40,7 @@ cd .claude/worktrees/impl-1
 **手動で行う場合**:
 
 ```bash
-cd /mnt/takeshi/hdd/workspace/ai-assistant
+cd <repo-root>
 git pull origin main
 git worktree add .claude/worktrees/impl-1 -b feat/{機能名}
 cd .claude/worktrees/impl-1
@@ -49,8 +51,8 @@ cd .claude/worktrees/impl-1
 ### 3. 調査結果の参照
 
 ```bash
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "research" --state open
-gh issue view #{research_issue_number} --repo YOUR_ORG/YOUR_REPO
+gh issue list --repo "$REPO" --label "research" --state open
+gh issue view #{research_issue_number} --repo "$REPO"
 ```
 
 ### 4. 実装
@@ -62,7 +64,7 @@ gh issue view #{research_issue_number} --repo YOUR_ORG/YOUR_REPO
 **気づいた改善点は別Issueに記録**:
 ```bash
 gh issue create \
-  --repo YOUR_ORG/YOUR_REPO \
+  --repo "$REPO" \
   --title "feat: {改善内容}" \
   --label "implementation" \
   --body "実装中に気づいた改善点: {詳細}"

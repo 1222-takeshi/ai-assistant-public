@@ -14,15 +14,17 @@ Researcher / Requirements Analyst / Implementer / Reviewer の稼働状況、
 
 ## 実行フロー
 
+以下では必要に応じて `REPO="${GH_REPO:-$(gh repo view --json nameWithOwner -q .nameWithOwner)}"` を事前に設定する。
+
 ### 1. レポジトリ状態の確認
 
 ```bash
-gh issue list --repo YOUR_ORG/YOUR_REPO --state open
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "blocked" --state open
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "review-needed" --state open
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "implementation" --state open
-gh issue list --repo YOUR_ORG/YOUR_REPO --label "research" --state open
-gh pr list --repo YOUR_ORG/YOUR_REPO --state open
+gh issue list --repo "$REPO" --state open
+gh issue list --repo "$REPO" --label "blocked" --state open
+gh issue list --repo "$REPO" --label "review-needed" --state open
+gh issue list --repo "$REPO" --label "implementation" --state open
+gh issue list --repo "$REPO" --label "research" --state open
+gh pr list --repo "$REPO" --state open
 git worktree list
 ```
 
