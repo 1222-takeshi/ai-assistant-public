@@ -9,6 +9,7 @@
 - レビュー結果をフォーマット化して出力する
 - NGの場合: 担当者（Requirements Analyst or Implementer）と修正ループ
 - OKになったら最終判断をOrchestratorに委ねる（自身ではマージしない）
+- same identity の `COMMENTED` review を approval の代替にしない
 
 ## PR として入れる必要の有無（最初に判断する）
 
@@ -64,6 +65,9 @@ gh pr view #{pr_number} --repo "$REPO"
 gh pr diff #{pr_number} --repo "$REPO"
 gh pr checks #{pr_number} --repo "$REPO"
 ```
+
+reviewer identity が requested reviewer になっていることを確認する。  
+same identity しか使えない場合は `COMMENT` とラベルで暫定運用し、正式 approval gate を満たしたとは扱わない。
 
 ### 4. レビュー結果の出力
 
@@ -123,6 +127,7 @@ gh issue edit #{issue_number} \
   --add-label "approved"
 
 # PRの場合
+# reviewer identity が separate reviewer として使えるときだけ --approve を返す
 gh pr review #{pr_number} \
   --repo "$REPO" \
   --approve \
@@ -132,6 +137,22 @@ gh pr edit #{pr_number} \
   --remove-label "review-needed" \
   --add-label "approved"
 ```
+
+separate reviewer identity が無い場合:
+
+```bash
+gh pr review #{pr_number} \
+  --repo "$REPO" \
+  --comment \
+  --body "{レビュー結果}"
+gh pr edit #{pr_number} \
+  --repo "$REPO" \
+  --remove-label "review-needed" \
+  --add-label "approved"
+```
+
+この場合は暫定運用であり、required approving reviews を満たしたとは表現しない。  
+`approved` ラベルは reviewer の判断としては OK を表すが、GitHub の formal `APPROVED` review と同義ではない。
 
 ## 重要度の定義
 

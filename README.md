@@ -98,6 +98,8 @@ worktree 作成前は `scripts/worktree-cleanup.sh` で stale metadata を prune
 ./scripts/list-worktrees.sh
 ```
 
+PR review flow の詳細は [docs/pr-review-flow.md](docs/pr-review-flow.md) を参照してください。
+
 ## Optional PMO Profile
 
 PMO 関連のコマンドは optional profile です。  
@@ -115,6 +117,9 @@ core workflow を使うだけなら設定不要です。使う場合だけ `conf
 - `./scripts/bootstrap.sh` は非破壊な初期化補助です。`--init-pmo-config` を付けた場合だけ `*.local.yaml` を生成します
 - `python3 scripts/doctor.py` は success / warning / failure で環境状態を返します
 - `scripts/gh-workflow.sh` は `GH_REPO`、`--repo`、または `origin` remote から対象 repo を決定します
+- PR review flow は [docs/pr-review-flow.md](docs/pr-review-flow.md) を source of truth とし、same identity の `COMMENTED` review を正式 approval gate にしません
+- reviewer request は `./scripts/gh-workflow.sh pr --reviewer ...` または `./scripts/gh-workflow.sh request-review --pr ... --reviewer ...` で行えます
+- 暫定運用では `review-needed` を外して `approved` ラベルで状態管理しますが、これは GitHub の formal `APPROVED` review と同義ではありません
 - `config/*.yaml` は tracked template、`config/*.example.yaml` はコピー元サンプル、`config/*.local.yaml` は ignored な local override です
 - 実行時の優先順位は `local > tracked template` です。`example` は runtime に入りません
 - 実運用値は tracked file に書かず、`*.local.yaml` に分離してください
@@ -130,4 +135,5 @@ core workflow を使うだけなら設定不要です。使う場合だけ `conf
 - Security: [SECURITY.md](SECURITY.md)
 - Release Checklist: [docs/public-release-checklist.md](docs/public-release-checklist.md)
 - Onboarding: [docs/onboarding.md](docs/onboarding.md)
+- PR Review Flow: [docs/pr-review-flow.md](docs/pr-review-flow.md)
 - PMO Profile: [docs/pmo-profile.md](docs/pmo-profile.md)
