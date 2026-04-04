@@ -11,8 +11,7 @@
 # 環境依存ファイル
 .env
 .env.local
-config/notion.local.yaml
-config/confluence.local.yaml
+config/*.local.yaml
 
 # Python
 __pycache__/

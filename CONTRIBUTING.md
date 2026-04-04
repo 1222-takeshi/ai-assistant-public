@@ -10,15 +10,18 @@
 ```bash
 python -m pip install -r requirements-dev.txt
 pytest tests/ -v -p no:cacheprovider
+python3 scripts/validate-config.py --tracked-only
 ```
 
 ## Development Rules
 
 - 変更は小さく保つ
 - 実運用値や内部 URL、ID、トークンはコミットしない
-- `config/` の tracked ファイルは public-safe テンプレートとして維持する
+- `config/*.yaml` の tracked ファイルは public-safe template として維持する
+- `config/*.example.yaml` はコピー元サンプル、`config/*.local.yaml` は ignored な local override として扱う
 - 実運用値は `config/*.local.yaml` などの未追跡ファイルに分離する
-- `*.example.yaml` を採る場合は、コミット対象は example のみ、実値は ignored の local file にする
+- 優先順位は `local > tracked template` とし、`example` は runtime に含めない
+- config を変更したら `python3 scripts/validate-config.py --tracked-only` で template 状態を確認する
 - スクリプトは特定 repo やローカル絶対パスに依存させない
 
 ## Pull Requests

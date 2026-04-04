@@ -58,8 +58,14 @@ python -m pip install -r requirements-dev.txt
 pytest tests/ -v -p no:cacheprovider
 ```
 
-5. `.claude/team-topology.yaml` と `/dev/start-team` を source of truth として開発フローを開始する
-6. PMO profile が必要な場合だけ [docs/pmo-profile.md](docs/pmo-profile.md) を参照する
+5. tracked config template の状態を確認する
+
+```bash
+python3 scripts/validate-config.py --tracked-only
+```
+
+6. `.claude/team-topology.yaml` と `/dev/start-team` を source of truth として開発フローを開始する
+7. PMO profile が必要な場合だけ [docs/pmo-profile.md](docs/pmo-profile.md) を参照する
 
 ## Development Team Workflow
 
@@ -94,8 +100,10 @@ core workflow を使うだけなら設定不要です。使う場合だけ `conf
 ## Making This Template Your Own
 
 - `scripts/gh-workflow.sh` は `GH_REPO`、`--repo`、または `origin` remote から対象 repo を決定します
-- `config/` の YAML は配布用テンプレートです。実運用値は `*.local.yaml` などの未追跡ファイルに分離してください
-- `example` と `local override` の2段構えにするなら、`*.example.yaml` をコミット対象、`*.local.yaml` を ignored にするのが安全です
+- `config/*.yaml` は tracked template、`config/*.example.yaml` はコピー元サンプル、`config/*.local.yaml` は ignored な local override です
+- 実行時の優先順位は `local > tracked template` です。`example` は runtime に入りません
+- 実運用値は tracked file に書かず、`*.local.yaml` に分離してください
+- 変更後は `python3 scripts/validate-config.py --check-local` で local override を検証してください
 - `.claude/team-topology.yaml` の role / lane / worktree 名はそのままでも、チーム運用に合わせて変更しても構いません
 - PMO を使わない利用者は `docs/pmo-profile.md` を無視して構いません
 
