@@ -44,6 +44,8 @@ def public_text_files() -> list[Path]:
     ]
     files.extend(sorted((REPO_ROOT / ".claude" / "commands").rglob("*.md")))
     files.extend(sorted((REPO_ROOT / "docs").glob("*.md")))
+    files.extend(sorted((REPO_ROOT / "scripts").glob("*.py")))
+    files.extend(sorted((REPO_ROOT / "scripts").glob("*.sh")))
     return files
 
 
@@ -64,6 +66,9 @@ def numeric_id_sensitive_files() -> list[Path]:
         CONFLUENCE_EXAMPLE,
         REPO_ROOT / ".claude" / "team-topology.yaml",
         REPO_ROOT / "docs" / "pmo-profile.md",
+        REPO_ROOT / "scripts" / "bootstrap.sh",
+        REPO_ROOT / "scripts" / "doctor.py",
+        REPO_ROOT / "scripts" / "validate-config.py",
     ]
 
 

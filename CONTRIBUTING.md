@@ -8,7 +8,7 @@
 ## Setup
 
 ```bash
-python -m pip install -r requirements-dev.txt
+python3 -m pip install -r requirements-dev.txt
 pytest tests/ -v -p no:cacheprovider
 python3 scripts/validate-config.py --tracked-only
 ```

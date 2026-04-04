@@ -49,7 +49,7 @@ ai-assistant/
 3. 依存を入れる
 
 ```bash
-python -m pip install -r requirements-dev.txt
+python3 -m pip install -r requirements-dev.txt
 ```
 
 4. テストを実行する
@@ -58,14 +58,26 @@ python -m pip install -r requirements-dev.txt
 pytest tests/ -v -p no:cacheprovider
 ```
 
-5. tracked config template の状態を確認する
+5. 非破壊な bootstrap を実行する
+
+```bash
+./scripts/bootstrap.sh
+```
+
+6. doctor で環境を確認する
+
+```bash
+python3 scripts/doctor.py
+```
+
+7. tracked config template の状態を確認する
 
 ```bash
 python3 scripts/validate-config.py --tracked-only
 ```
 
-6. `.claude/team-topology.yaml` と `/dev/start-team` を source of truth として開発フローを開始する
-7. PMO profile が必要な場合だけ [docs/pmo-profile.md](docs/pmo-profile.md) を参照する
+8. `.claude/team-topology.yaml` と `/dev/start-team` を source of truth として開発フローを開始する
+9. PMO profile が必要な場合だけ [docs/pmo-profile.md](docs/pmo-profile.md) を参照する
 
 ## Development Team Workflow
 
@@ -99,6 +111,9 @@ core workflow を使うだけなら設定不要です。使う場合だけ `conf
 
 ## Making This Template Your Own
 
+- onboarding は [docs/onboarding.md](docs/onboarding.md) から開始できます
+- `./scripts/bootstrap.sh` は非破壊な初期化補助です。`--init-pmo-config` を付けた場合だけ `*.local.yaml` を生成します
+- `python3 scripts/doctor.py` は success / warning / failure で環境状態を返します
 - `scripts/gh-workflow.sh` は `GH_REPO`、`--repo`、または `origin` remote から対象 repo を決定します
 - `config/*.yaml` は tracked template、`config/*.example.yaml` はコピー元サンプル、`config/*.local.yaml` は ignored な local override です
 - 実行時の優先順位は `local > tracked template` です。`example` は runtime に入りません
@@ -114,4 +129,5 @@ core workflow を使うだけなら設定不要です。使う場合だけ `conf
 - Code of Conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - Security: [SECURITY.md](SECURITY.md)
 - Release Checklist: [docs/public-release-checklist.md](docs/public-release-checklist.md)
+- Onboarding: [docs/onboarding.md](docs/onboarding.md)
 - PMO Profile: [docs/pmo-profile.md](docs/pmo-profile.md)
