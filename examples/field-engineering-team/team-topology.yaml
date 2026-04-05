@@ -1,0 +1,62 @@
+team:
+  name: field-engineering-team
+  description: フィールドエンジニアリングチームの参考構成
+
+lanes:
+  - id: field-lead
+    role: field-orchestrator
+    worktree: .claude/worktrees/field-lead
+    responsibility: |
+      - 現場訪問計画・優先度判断
+      - 顧客折衝・エスカレーション最終判断
+      - 他チームへのハンドオフ調整
+
+  - id: site-engineer
+    role: field-implementer
+    worktree: .claude/worktrees/site-eng
+    responsibility: |
+      - 現場作業ドキュメント作成
+      - 技術報告書・手順書整備
+      - 障害一次診断
+
+  - id: customer-success
+    role: analyst
+    worktree: .claude/worktrees/cs
+    responsibility: |
+      - 顧客フィードバック収集・整理
+      - 満足度スコア分析
+      - 改善提案 Issue 作成
+
+  - id: escalation-handler
+    role: escalation
+    worktree: .claude/worktrees/escalation
+    responsibility: |
+      - 重大度分類（Critical / High / Low）
+      - 社内エスカレーション一次対応手順作成
+      - 開発チームへのブリーフィング
+
+  - id: knowledge-base
+    role: knowledge-manager
+    worktree: .claude/worktrees/kb
+    responsibility: |
+      - 現場知見のナレッジ化
+      - FAQ・マニュアル更新
+      - ベストプラクティス文書化
+
+labels:
+  - field-report
+  - customer-feedback
+  - escalation
+  - escalation-critical
+  - knowledge-base
+  - site-visit
+  - resolved
+  - pending-dev
+  - pending-security
+
+handoffs:
+  escalation-handler:
+    to_dev: implementation ラベルで開発チームへ
+    to_security: セキュリティリスクは security-team へ
+  knowledge-base:
+    trigger: resolved ラベルが付いた Issue を自動でナレッジ化

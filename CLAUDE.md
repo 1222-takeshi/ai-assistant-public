@@ -1,14 +1,14 @@
 # ai-assistant
 
-Claude Code を中心とした AI アシスタント運用テンプレート。  
-このリポジトリの core は `dev` workflow です。PMO 機能は optional profile として扱います。
+Claude Code / Codex / GitHub Copilot 向けの **AI エージェントチーム運用フレームワーク**。  
+このリポジトリの core は「仕組み（フレームワーク）」であり、`dev` workflow は参考実装の一つです。
 
 ## プロジェクト概要
 
-- **目的**: Claude Code / MCP ツールを活用した開発・運用フローのテンプレート化
-- **アーキテクチャ**: マルチエージェント開発フロー
-- **設計方針**: GitHub Issue 駆動・`git worktree` による並列開発
-- **プロダクト境界**: `dev` は core、`pmo` は opt-in profile
+- **目的**: AI エージェントチームの運用に必要な仕組みを提供するフレームワーク
+- **アーキテクチャ**: マルチエージェント並列作業 + GitHub Issues 調整レイヤー
+- **設計方針**: フレームワーク部分は汎用的に、チーム構成・ポリシーは利用者が自由に定義する
+- **このリポジトリの設定**: `dev` workflow を採用（参考実装。置き換え可）。`pmo` は opt-in profile
 
 ## ディレクトリ構成
 
@@ -111,7 +111,10 @@ python3 scripts/validate-config.py --tracked-only
 python3 scripts/validate-config.py --check-local
 ```
 
-## 開発ルール
+## 開発ルール（このリポジトリの設定）
+
+> 以下はこのリポジトリが採用しているルールです。  
+> あなたのチームに合わせて自由に変更してください。
 
 - `main` への直接 push はしない
 - コミットメッセージと PR タイトルは英語・Conventional Commits 形式を推奨
@@ -120,8 +123,8 @@ python3 scripts/validate-config.py --check-local
 - same identity の `COMMENTED` review は正式な approval gate とみなさない
 - PR review flow の詳細は `docs/pr-review-flow.md` を source of truth とする
 - 暫定運用でも `review-needed` は外し、`approved` は review 結果 OK を示すラベルとして使う
-- **Reviewer は超辛口**: 🔴必須 1件以上 または 🟡推奨 3件以上で即 NG
-- **NG 時は PR を即 Close**: 修正ループは行わない。実装者は新規ブランチ・新規 PR で再挑戦する
+- **このリポジトリのReviewerポリシー**: 🔴必須 1件以上 または 🟡推奨 3件以上で即 NG・PR を即 Close
+  - ※ これはこのリポジトリの選択です。別のポリシー（修正ループ許容など）も valid です
 
 ## Onboarding
 

@@ -1,0 +1,79 @@
+team:
+  name: admin-support-team
+  description: 管理・バックオフィスチームの参考構成
+
+lanes:
+  - id: executive-secretary
+    role: secretary
+    worktree: .claude/worktrees/secretary
+    responsibility: |
+      - スケジュール管理・日程調整
+      - 会議アジェンダ・議事録作成
+      - メール下書き・発送管理
+      - Action Item の Issue 化
+
+  - id: finance-analyst
+    role: finance
+    worktree: .claude/worktrees/finance
+    responsibility: |
+      - 経費精算チェック・集計
+      - 月次・四半期財務レポート作成
+      - 予算実績差異分析
+
+  - id: budget-controller
+    role: budget
+    worktree: .claude/worktrees/budget
+    responsibility: |
+      - 予算超過アラート管理
+      - コスト配分・最適化提案
+      - 承認フロー管理
+
+  - id: hr-coordinator
+    role: hr
+    worktree: .claude/worktrees/hr
+    responsibility: |
+      - 採用管理・候補者整理
+      - オンボーディング資料整備
+      - 勤怠集計・有給管理サポート
+
+  - id: legal-checker
+    role: legal
+    worktree: .claude/worktrees/legal
+    responsibility: |
+      - 契約書レビュー・リスク洗い出し
+      - コンプライアンス確認
+      - NDA・秘密保持に関するチェック
+
+  - id: procurement-agent
+    role: procurement
+    worktree: .claude/worktrees/procurement
+    responsibility: |
+      - 発注・見積比較
+      - ベンダー管理・評価
+      - 稟議資料作成
+
+labels:
+  - finance
+  - budget
+  - expense
+  - legal
+  - hr
+  - procurement
+  - pending-approval
+  - approved-exec
+  - requires-signature
+  - confidential
+
+handoffs:
+  finance-analyst:
+    to: budget-controller
+    trigger: 経費集計完了後
+  budget-controller:
+    to: legal-checker
+    trigger: 予算超過・契約関連の場合
+  legal-checker:
+    to: executive-secretary
+    trigger: 承認依頼の送付が必要な場合
+  executive-secretary:
+    to: ceo_or_manager
+    trigger: 最終承認が必要な書類

@@ -7,6 +7,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- **AI agent team framework repositioning** — Repo reframed as a scaffold framework; `dev/` workflow is now one opt-in example, not a mandate
+- **8 new team examples** in `examples/`: executive-team (CEO/CTO/CFO), qa-team, field-engineering-team, admin-support-team (secretary/finance/HR/legal), security-team, data-science-team, dev-workflow (reference copy), pmo-workflow (reference copy)
+- **`examples/team-catalog.md`** — Comprehensive 9-team comparison catalog
+- **`docs/framework.md`** — Explicit framework vs examples boundary documentation
+
+### Changed
+
+- `README.md` / `README.en.md` — Reframed from "dev workflow template" to "AI agent team framework scaffold"
+- `CLAUDE.md` — Reviewer policy now marked as "this repo's choice", not a universal mandate
+- `AGENTS.md` — Added prominent notice that `dev/` configuration is one example, not required
+
 ## [1.0.0] - 2026-04-05
 
 ### Added

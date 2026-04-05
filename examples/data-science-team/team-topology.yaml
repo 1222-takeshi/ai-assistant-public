@@ -1,0 +1,64 @@
+team:
+  name: data-science-team
+  description: データサイエンスチームの参考構成
+
+lanes:
+  - id: data-scientist
+    role: analyst
+    worktree: .claude/worktrees/ds-1
+    responsibility: |
+      - 仮説設定・分析設計
+      - モデル評価・解釈
+      - ビジネス向け示唆抽出
+
+  - id: ml-engineer
+    role: implementer
+    worktree: .claude/worktrees/ml-eng
+    responsibility: |
+      - モデル実装・チューニング
+      - 推論パイプライン構築
+      - パフォーマンス最適化
+
+  - id: data-engineer
+    role: data-infra
+    worktree: .claude/worktrees/data-eng
+    responsibility: |
+      - データ収集・前処理
+      - データパイプライン整備
+      - データ品質モニタリング
+
+  - id: model-reviewer
+    role: reviewer
+    worktree: .claude/worktrees/model-review
+    responsibility: |
+      - モデルの公平性・精度・バイアスレビュー
+      - 再現性・テスト可能性の確認
+      - 本番投入可否判断
+
+  - id: insight-reporter
+    role: communicator
+    worktree: .claude/worktrees/reporting
+    responsibility: |
+      - 分析結果をビジネス向けレポートに変換
+      - ダッシュボード仕様策定
+      - ステークホルダーへのプレゼン資料作成
+
+labels:
+  - analysis
+  - model
+  - data-pipeline
+  - model-review-needed
+  - model-approved
+  - bias-risk
+  - insight
+
+handoffs:
+  data-engineer:
+    to: data-scientist
+    trigger: データパイプライン完成後
+  ml-engineer:
+    to: model-reviewer
+    trigger: モデル実装完了後
+  model-reviewer:
+    on_ng: ml-engineer に差し戻し（バイアス・精度未達）
+    on_ok: insight-reporter へハンドオフ

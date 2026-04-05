@@ -1,0 +1,77 @@
+team:
+  name: executive-team
+  description: 経営・戦略意思決定チームの参考構成
+
+lanes:
+  - id: ceo
+    role: decision-maker
+    worktree: .claude/worktrees/ceo
+    responsibility: |
+      - 最終意思決定・ビジョン策定
+      - ステークホルダーへの報告
+      - 戦略の優先順位付け
+    commands:
+      - /exec/decide
+      - /exec/report
+
+  - id: cto
+    role: tech-strategy
+    worktree: .claude/worktrees/cto
+    responsibility: |
+      - 技術戦略・アーキテクチャ判断
+      - 技術リスク評価・ベンダー選定
+      - エンジニアリングチームへの技術指針提示
+    commands:
+      - /exec/tech-review
+      - /exec/architecture-decision
+
+  - id: cfo
+    role: finance-strategy
+    worktree: .claude/worktrees/cfo
+    responsibility: |
+      - 予算管理・コスト分析
+      - 財務レポート作成
+      - 投資判断の財務モデリング
+    commands:
+      - /exec/budget-review
+      - /exec/financial-report
+
+  - id: chief-of-staff
+    role: coordinator
+    worktree: .claude/worktrees/chief-of-staff
+    responsibility: |
+      - 情報集約・アジェンダ作成
+      - 意思決定フォローアップ
+      - Action Item の Issue 化と割り当て
+    commands:
+      - /exec/agenda
+      - /exec/action-items
+
+  - id: strategy-analyst
+    role: researcher
+    worktree: .claude/worktrees/strategy-1
+    responsibility: |
+      - 市場調査・競合分析
+      - 戦略オプションの整理
+      - 定量データの収集・可視化
+
+labels:
+  - strategic-review
+  - budget-approval
+  - architecture-decision
+  - pending-ceo
+  - pending-cto
+  - pending-cfo
+  - approved-exec
+  - blocked-exec
+
+handoffs:
+  strategy-analyst:
+    to: chief-of-staff
+    trigger: 調査 Issue に findings ラベルが付いたとき
+  chief-of-staff:
+    to: [ceo, cto, cfo]
+    trigger: アジェンダ Issue が作成されたとき
+  ceo:
+    to: chief-of-staff
+    trigger: 意思決定後の Action Item 展開

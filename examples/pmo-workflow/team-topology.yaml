@@ -1,0 +1,62 @@
+team:
+  name: pmo-workflow
+  description: PMO チームの参考構成（外部サービス連携前提）
+
+lanes:
+  - id: pmo-orchestrator
+    role: orchestrator
+    worktree: .claude/worktrees/pmo-orch
+    responsibility: |
+      - タスク優先度決定・エージェントへの作業割り当て
+      - 週次・月次レポートの取りまとめ
+      - 外部サービス（Notion / Jira / Confluence）の整合性確認
+
+  - id: task-manager
+    role: task-ops
+    worktree: .claude/worktrees/pmo-task
+    responsibility: |
+      - Notion タスクの読み込み・整理
+      - Jira チケット作成・更新
+      - Confluence ページ更新
+
+  - id: meeting-coordinator
+    role: coordinator
+    worktree: .claude/worktrees/pmo-meeting
+    responsibility: |
+      - Google Calendar からの会議情報取得
+      - Slack / Gmail からの議事録資料収集
+      - 議事録草案作成・配布
+
+  - id: reporter
+    role: reporter
+    worktree: .claude/worktrees/pmo-report
+    responsibility: |
+      - 日次・週次進捗レポート生成
+      - KPI ダッシュボード更新
+      - ステークホルダー向け要約作成
+
+labels:
+  - pmo-task
+  - meeting-minutes
+  - report
+  - review-needed
+  - approved
+  - blocked
+
+handoffs:
+  task-manager:
+    to: pmo-orchestrator
+    trigger: タスク取り込み完了後
+  meeting-coordinator:
+    to: reporter
+    trigger: 議事録草案完成後
+  reporter:
+    to: pmo-orchestrator
+    trigger: レポート生成完了後（確認・配布判断）
+
+prerequisites:
+  - Notion MCP
+  - Atlassian MCP (Jira / Confluence)
+  - Google Calendar MCP
+  - Slack MCP
+  - Gmail MCP

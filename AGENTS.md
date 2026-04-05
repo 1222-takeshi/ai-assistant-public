@@ -7,12 +7,31 @@ working in this repository.
 
 ## Purpose
 
-This repository is a **multi-agent development workflow template** for Claude Code / Codex.
+This repository is a **framework for building and operating AI agent teams** — for Claude Code, Codex, GitHub Copilot, or any LLM-based coding agent.
+
 It provides:
-- Custom slash commands for a 7-role agent team (`/dev/` commands)
-- `git worktree`-based parallel development patterns
-- GitHub Issue-driven flow: research → requirements → review → implement → PR → review → merge
-- Optional PMO profile (Notion / Jira / Confluence integration)
+- A scaffold for defining agent roles, lanes, and handoffs (`team-topology.yaml`)
+- `git worktree`-based parallel work patterns
+- GitHub Issue-driven coordination layer
+- Scripts for environment setup, health checks, and label management
+- **Reference implementations** in `examples/` for various team types
+
+> ⚠️ **Important**: The `dev/` commands in `.claude/commands/dev/` are **this repository's chosen configuration** — one example of the framework in use.
+> You are NOT required to use this team structure, review policy, or workflow.
+> See `examples/team-catalog.md` for alternative team patterns.
+
+## Available Team Examples
+
+| Example | Description |
+|---------|-------------|
+| `examples/dev-workflow/` | Software development team (Orchestrator / Researcher / Implementer / Reviewer) |
+| `examples/executive-team/` | Executive team (CEO / CTO / CFO / Chief of Staff) |
+| `examples/qa-team/` | QA / quality assurance team |
+| `examples/field-engineering-team/` | Field engineering / customer-facing team |
+| `examples/admin-support-team/` | Admin / back-office (secretary, finance, HR, legal) |
+| `examples/security-team/` | Security review team |
+| `examples/data-science-team/` | Data science / ML team |
+| `examples/pmo-workflow/` | PMO team (requires external MCP integrations) |
 
 ## Quick Commands
 

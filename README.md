@@ -3,29 +3,44 @@
 [![CI](https://github.com/YOUR_ORG/YOUR_REPO/actions/workflows/test.yml/badge.svg)](https://github.com/YOUR_ORG/YOUR_REPO/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
-Claude Code / Codex 向けのマルチエージェント運用テンプレートです。  
-この OSS の core は、GitHub Issue 駆動の開発チーム workflow と `git worktree` ベースの並列開発です。  
-PMO 連携は optional profile として分離し、core Quickstart には含めません。
+Claude Code / Codex / GitHub Copilot 向けの **AI エージェントチーム運用フレームワーク**です。
+
+> **このリポジトリの位置づけ**  
+> チームの「仕組み（フレームワーク）」を提供します。どんなチーム構成にするか・どんなポリシーにするかは、あなたが自由に決めてください。  
+> `examples/` には様々なチームパターンが用意されています。それらは参考実装であり、強要するものではありません。
 
 ## What This Repository Provides
 
-### Core Workflow
+### Framework（共通基盤）
 
-- 開発チーム用のカスタムコマンド群
-  - `/dev/start-team`
-  - `/dev/status`
-  - `/dev/orchestrate`
-  - `/dev/research`
-  - `/dev/define-requirements`
-  - `/dev/implement`
-  - `/dev/review`
-- `.claude/team-topology.yaml` による役割・レーン・handoff の定義
-- `scripts/setup-worktree.sh` を中心とした worktree 運用補助
+どのチーム構成にも共通して使えるツール群です。
 
-### Optional PMO Profile
+- `git worktree` による並列作業の仕組み（`scripts/setup-worktree.sh`）
+- GitHub Issues を調整レイヤーとして使うパターン
+- ラベルによる状態管理（`scripts/setup-labels.sh`）
+- 設定ファイルの layering（`config/*.local.yaml` が最優先）
+- 環境セットアップ・ヘルスチェック（`scripts/bootstrap.sh`, `doctor.py`）
+- `.claude/commands/` のコマンドファイル構造
 
-- Notion / Jira / Confluence / Slack / Gmail 連携を前提にした PMO コマンドテンプレート
-- 詳細は [docs/pmo-profile.md](docs/pmo-profile.md)
+### Examples（参考実装 — すべて opt-in）
+
+| チームパターン | 用途 |
+|-------------|------|
+| [dev-workflow](examples/dev-workflow/) | ソフトウェア開発チーム |
+| [pmo-workflow](examples/pmo-workflow/) | プロジェクト管理（外部サービス連携） |
+| [executive-team](examples/executive-team/) | 経営・戦略意思決定 |
+| [qa-team](examples/qa-team/) | 品質保証・テスト |
+| [field-engineering-team](examples/field-engineering-team/) | フィールドエンジニアリング |
+| [admin-support-team](examples/admin-support-team/) | 管理・バックオフィス（秘書・財務・HR）|
+| [security-team](examples/security-team/) | セキュリティレビュー |
+| [data-science-team](examples/data-science-team/) | データサイエンス・ML |
+
+→ [examples/team-catalog.md](examples/team-catalog.md) で全パターンを比較できます。
+
+### このリポジトリ自身の設定
+
+このリポジトリは `dev-workflow` を `.claude/commands/dev/` として採用しています。  
+**これはこのリポジトリの選択であり、あなたが同じ構成にする必要はありません。**
 
 ## Repository Layout
 
@@ -33,16 +48,28 @@ PMO 連携は optional profile として分離し、core Quickstart には含め
 ai-assistant/
 ├── .claude/
 │   ├── commands/
-│   │   ├── dev/
-│   │   └── pmo/
-│   └── team-topology.yaml
+│   │   ├── dev/           ← このリポジトリが採用している参考実装
+│   │   └── pmo/           ← PMO 参考実装
+│   └── team-topology.yaml ← このリポジトリの設定（参考）
 ├── config/
 │   ├── notion.yaml
 │   └── confluence.yaml
 ├── docs/
+│   ├── framework.md       ← フレームワーク vs 参考実装の境界
+│   └── ...
 ├── examples/
-│   ├── github-only-flow.md   ← GitHub-only happy path walkthrough
-│   └── templates/            ← Issue / PR / review サンプル成果物
+│   ├── team-catalog.md    ← 全チームパターン一覧
+│   ├── dev-workflow/      ← ソフトウェア開発チーム（参考実装）
+│   ├── pmo-workflow/      ← PMO チーム（参考実装）
+│   ├── executive-team/    ← 経営チーム（参考実装）
+│   ├── qa-team/           ← QA チーム（参考実装）
+│   ├── field-engineering-team/  ← FE チーム（参考実装）
+│   ├── admin-support-team/      ← 管理部門チーム（参考実装）
+│   ├── security-team/     ← セキュリティチーム（参考実装）
+│   ├── data-science-team/ ← データサイエンスチーム（参考実装）
+│   ├── github-only-flow.md
+│   ├── agent-team-demo/
+│   └── templates/
 ├── scripts/
 ├── templates/
 └── tests/

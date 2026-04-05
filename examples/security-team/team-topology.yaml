@@ -1,0 +1,57 @@
+team:
+  name: security-team
+  description: セキュリティチームの参考構成
+
+lanes:
+  - id: security-architect
+    role: security-lead
+    worktree: .claude/worktrees/sec-arch
+    responsibility: |
+      - セキュリティ設計レビュー・脅威モデリング
+      - セキュリティポリシー定義
+      - 最終リスク判断
+
+  - id: pen-tester
+    role: tester
+    worktree: .claude/worktrees/pen-test
+    responsibility: |
+      - 脆弱性スキャン・OWASP チェック
+      - 依存パッケージ監査 (dependabot / snyk)
+      - ペネトレーションテスト手順書作成
+
+  - id: compliance-reviewer
+    role: compliance
+    worktree: .claude/worktrees/compliance
+    responsibility: |
+      - 法規制準拠確認 (GDPR / SOC2 / PCI-DSS)
+      - 社内セキュリティポリシー遵守チェック
+      - 非準拠 Issue 作成・是正指示
+
+  - id: incident-responder
+    role: incident
+    worktree: .claude/worktrees/incident
+    responsibility: |
+      - インシデント初動対応手順作成
+      - 影響範囲特定・関係者通知下書き
+      - ポストモーテム文書化
+
+labels:
+  - security-review
+  - vulnerability
+  - compliance
+  - incident
+  - severity-critical
+  - severity-high
+  - severity-medium
+  - severity-low
+
+handoffs:
+  pen-tester:
+    to: security-architect
+    trigger: 脆弱性発見後
+  compliance-reviewer:
+    to: security-architect
+    trigger: 非準拠項目発見後
+  incident-responder:
+    to: security-architect
+    trigger: インシデント発生時の即時エスカレーション

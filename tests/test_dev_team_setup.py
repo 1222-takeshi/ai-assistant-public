@@ -211,18 +211,20 @@ class TestDocumentation:
 
     def test_readme_mentions_new_team_files(self):
         content = README_MD.read_text(encoding="utf-8")
-        assert "/dev/start-team" in content
-        assert "/dev/status" in content
+        # README should mention the examples catalog or the examples table
+        assert "team-catalog" in content or "examples/dev-workflow" in content
 
     def test_readme_separates_core_and_optional(self):
         content = README_MD.read_text(encoding="utf-8")
-        assert "Core Workflow" in content
-        assert "Optional PMO Profile" in content
+        # Framework reposition: "Framework" and "Examples" sections replace old "Core/Optional" split
+        assert ("Framework" in content or "Core Workflow" in content)
+        assert ("Examples" in content or "Optional PMO Profile" in content)
 
     def test_claude_separates_core_and_optional(self):
         content = CLAUDE_MD.read_text(encoding="utf-8")
-        assert "core は `dev` workflow" in content
-        assert "optional profile" in content
+        assert "optional profile" in content or "opt-in" in content
+        # Either old wording or new framework-oriented wording
+        assert ("core は `dev` workflow" in content or "フレームワーク" in content)
 
     def test_quickstart_does_not_require_pmo(self):
         content = README_MD.read_text(encoding="utf-8")

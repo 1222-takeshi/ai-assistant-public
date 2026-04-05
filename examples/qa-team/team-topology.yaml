@@ -1,0 +1,72 @@
+team:
+  name: qa-team
+  description: 品質保証チームの参考構成
+
+lanes:
+  - id: qa-lead
+    role: qa-orchestrator
+    worktree: .claude/worktrees/qa-lead
+    responsibility: |
+      - テスト計画立案・品質基準定義
+      - 品質ゲート最終判断
+      - 開発チームへのフィードバック調整
+
+  - id: test-engineer-1
+    role: test-engineer
+    worktree: .claude/worktrees/test-1
+    responsibility: |
+      - テストケース設計・実装
+      - 自動テストスクリプト作成
+
+  - id: test-engineer-2
+    role: test-engineer
+    worktree: .claude/worktrees/test-2
+    responsibility: |
+      - テストケース設計・実装（parallel）
+      - 手動テスト手順書作成
+
+  - id: coverage-analyst
+    role: analyst
+    worktree: .claude/worktrees/coverage
+    responsibility: |
+      - カバレッジ計測・未テスト領域特定
+      - カバレッジレポート作成
+
+  - id: bug-triage
+    role: triage
+    worktree: .claude/worktrees/bug-triage
+    responsibility: |
+      - バグ重要度分類（Critical / High / Medium / Low）
+      - 再現手順整理
+      - 開発チームへのエスカレーション
+
+  - id: quality-reviewer
+    role: reviewer
+    worktree: .claude/worktrees/qa-reviewer
+    responsibility: |
+      - テスト成果物の査読
+      - 品質ゲート通過 / 差し戻し判断
+
+labels:
+  - test-plan
+  - test-case
+  - coverage-gap
+  - bug
+  - bug-critical
+  - bug-high
+  - bug-low
+  - qa-review-needed
+  - qa-approved
+  - qa-blocked
+
+handoffs:
+  test-engineer:
+    to: coverage-analyst
+    trigger: テスト実装完了後
+  coverage-analyst:
+    to: quality-reviewer
+    trigger: カバレッジレポート作成後
+  quality-reviewer:
+    on_ng:
+      action: test-engineer に差し戻し（修正 → 再提出）
+      note: 開発ワークフローと異なりNG時は即時closeしない（修正ループを許容）

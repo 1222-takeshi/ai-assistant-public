@@ -1,6 +1,6 @@
 # ai-assistant
 
-**A multi-agent AI development team template** for Claude Code, GitHub Copilot coding agent, and Codex.
+**An AI agent team operations framework** for Claude Code, GitHub Copilot coding agent, and Codex.
 
 [![CI](https://github.com/YOUR_ORG/YOUR_REPO/actions/workflows/test.yml/badge.svg)](https://github.com/YOUR_ORG/YOUR_REPO/actions/workflows/test.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -9,13 +9,32 @@
 
 ## What Is This?
 
-**ai-assistant** is a GitHub repository template that defines:
+**ai-assistant** is a scaffold framework for building and operating AI agent teams. It provides:
 
-- A **team of specialized AI agents** (Orchestrator, Researchers, Requirements Analyst, Implementers, Reviewer)
-- **Workflow commands** for each agent role (`/dev/start-team`, `/dev/implement`, `/dev/review`, …)
-- Conventions for **GitHub Issue-driven development** with `git worktree` for parallel work
-- An **ultra-strict Reviewer** policy: NG = PR closed immediately, no fix loops
-- An optional **PMO profile** (Notion, Atlassian, GCal, Slack, Gmail)
+- **Framework tooling**: `git worktree` patterns, GitHub Issue coordination, config layering, bootstrap/health-check scripts
+- **Reference examples** in `examples/` for different team types — software dev, executive, QA, field engineering, admin, security, data science, PMO, and more
+- A starting `.claude/commands/` structure that you can adopt or replace
+
+> ⚠️ **This is a framework, not a mandate.**
+> The `dev/` workflow and Reviewer policy in this repo are **one example** of the framework in use.
+> Pick the team topology and policies that fit your organization.
+
+---
+
+## Available Team Examples
+
+| Example | Description |
+|---------|-------------|
+| [`examples/dev-workflow/`](examples/dev-workflow/) | Software development team |
+| [`examples/executive-team/`](examples/executive-team/) | Executive team (CEO/CTO/CFO/Chief of Staff) |
+| [`examples/qa-team/`](examples/qa-team/) | QA / quality assurance team |
+| [`examples/field-engineering-team/`](examples/field-engineering-team/) | Field engineering / customer-facing team |
+| [`examples/admin-support-team/`](examples/admin-support-team/) | Admin / back-office (secretary, finance, HR, legal) |
+| [`examples/security-team/`](examples/security-team/) | Security review team |
+| [`examples/data-science-team/`](examples/data-science-team/) | Data science / ML team |
+| [`examples/pmo-workflow/`](examples/pmo-workflow/) | PMO team (requires external MCP integrations) |
+
+→ See [`examples/team-catalog.md`](examples/team-catalog.md) for a full comparison.
 
 ---
 
@@ -114,8 +133,20 @@ ai-assistant/
 │   ├── onboarding.md
 │   └── pr-review-flow.md
 ├── examples/
-│   ├── github-only-flow.md          # Step-by-step happy path
-│   └── templates/                   # Issue / PR / Review comment templates
+│   ├── team-catalog.md              # All team patterns comparison
+│   ├── dev-workflow/                # Software dev team (reference)
+│   │   ├── README.md
+│   │   ├── team-topology.yaml
+│   │   └── commands/dev/
+│   ├── executive-team/              # CEO/CTO/CFO team (reference)
+│   ├── qa-team/                     # QA / testing team (reference)
+│   ├── field-engineering-team/      # Field engineering team (reference)
+│   ├── admin-support-team/          # Secretary/Finance/HR team (reference)
+│   ├── security-team/               # Security review team (reference)
+│   ├── data-science-team/           # Data science / ML team (reference)
+│   ├── pmo-workflow/                # PMO team (reference, requires MCPs)
+│   ├── github-only-flow.md
+│   └── templates/
 ├── scripts/
 │   ├── bootstrap.sh                 # Environment initializer
 │   ├── doctor.py                    # Environment health check
@@ -124,7 +155,7 @@ ai-assistant/
 │   ├── setup-worktree.sh
 │   ├── worktree-cleanup.sh
 │   └── list-worktrees.sh
-└── tests/                           # 314 tests (pytest)
+└── tests/                           # 319 tests (pytest)
 ```
 
 ---
