@@ -1,0 +1,18 @@
+# Copilot coding agent environment setup
+# https://docs.github.com/en/copilot/customizing-copilot/customizing-the-development-environment-for-copilot-coding-agent
+
+steps:
+  - name: Set up Python
+    uses: actions/setup-python@v5
+    with:
+      python-version: "3.11"
+      cache: "pip"
+
+  - name: Install Python dependencies
+    run: python3 -m pip install -r requirements-dev.txt
+
+  - name: Run non-destructive bootstrap
+    run: ./scripts/bootstrap.sh
+
+  - name: Validate config templates
+    run: python3 scripts/validate-config.py --tracked-only

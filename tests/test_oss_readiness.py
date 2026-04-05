@@ -147,3 +147,93 @@ class TestDynamicRepoResolution:
         assert "GH_REPO" in content
         assert "resolve_repo" in content
         assert "git remote get-url origin" in content
+
+
+# ---------------------------------------------------------------------------
+# Phase 1 additions: AGENTS.md, copilot-setup-steps.yml, setup-labels.sh
+# ---------------------------------------------------------------------------
+
+AGENTS_MD = REPO_ROOT / "AGENTS.md"
+COPILOT_SETUP = REPO_ROOT / ".github" / "copilot-setup-steps.yml"
+SETUP_LABELS = REPO_ROOT / "scripts" / "setup-labels.sh"
+
+
+class TestAgentsMd:
+    def test_agents_md_exists(self):
+        assert AGENTS_MD.is_file(), "AGENTS.md が存在しない"
+
+    def test_agents_md_has_test_command(self):
+        content = AGENTS_MD.read_text()
+        assert "pytest" in content, "AGENTS.md にテスト実行コマンドが記載されていない"
+
+    def test_agents_md_has_prohibited_section(self):
+        content = AGENTS_MD.read_text()
+        assert "Prohibited" in content or "prohibited" in content.lower() or "禁止" in content, \
+            "AGENTS.md に禁止事項セクションがない"
+
+    def test_agents_md_has_reviewer_policy(self):
+        content = AGENTS_MD.read_text()
+        assert "NG" in content and ("close" in content.lower() or "Close" in content), \
+            "AGENTS.md に Reviewer NG ポリシーが記載されていない"
+
+    def test_agents_md_no_private_info(self):
+        content = AGENTS_MD.read_text()
+        assert not ATLASSIAN_DOMAIN_PATTERN.search(content), \
+            "AGENTS.md に private Atlassian ドメインが含まれている"
+        assert not LOCAL_WORKSPACE_PATH_PATTERN.search(content), \
+            "AGENTS.md にローカル絶対パスが含まれている"
+
+
+class TestCopilotSetupSteps:
+    def test_copilot_setup_exists(self):
+        assert COPILOT_SETUP.is_file(), ".github/copilot-setup-steps.yml が存在しない"
+
+    def test_copilot_setup_is_valid_yaml(self):
+        import yaml as _yaml
+        content = COPILOT_SETUP.read_text()
+        parsed = _yaml.safe_load(content)
+        assert parsed is not None, "copilot-setup-steps.yml が空または invalid YAML"
+
+    def test_copilot_setup_has_pip_install(self):
+        content = COPILOT_SETUP.read_text()
+        assert "pip" in content and "requirements-dev.txt" in content, \
+            "copilot-setup-steps.yml に pip install が定義されていない"
+
+    def test_copilot_setup_has_bootstrap(self):
+        content = COPILOT_SETUP.read_text()
+        assert "bootstrap" in content, \
+            "copilot-setup-steps.yml に bootstrap.sh が定義されていない"
+
+
+class TestSetupLabelsScript:
+    def test_setup_labels_exists(self):
+        assert SETUP_LABELS.is_file(), "scripts/setup-labels.sh が存在しない"
+
+    def test_setup_labels_is_executable(self):
+        import stat
+        mode = SETUP_LABELS.stat().st_mode
+        assert mode & stat.S_IXUSR, "scripts/setup-labels.sh に実行権限がない"
+
+    def test_setup_labels_syntax(self):
+        import subprocess
+        result = subprocess.run(["bash", "-n", str(SETUP_LABELS)], capture_output=True, text=True)
+        assert result.returncode == 0, f"setup-labels.sh に構文エラーがある: {result.stderr}"
+
+    def test_setup_labels_no_hardcoded_repo(self):
+        content = SETUP_LABELS.read_text()
+        assert not HARDCODED_REPO_ASSIGNMENT_PATTERN.search(content), \
+            "setup-labels.sh にハードコードされたリポジトリがある"
+        assert not HARDCODED_GH_REPO_FLAG_PATTERN.search(content), \
+            "setup-labels.sh にハードコードされた --repo フラグがある"
+
+    def test_setup_labels_defines_all_required_labels(self):
+        content = SETUP_LABELS.read_text()
+        required = ["research", "requirements", "implementation", "review-needed", "approved", "blocked"]
+        for label in required:
+            assert label in content, f"setup-labels.sh に '{label}' ラベルの定義がない"
+
+    def test_bootstrap_mentions_setup_labels(self):
+        bootstrap = REPO_ROOT / "scripts" / "bootstrap.sh"
+        content = bootstrap.read_text()
+        assert "setup-labels" in content, \
+            "bootstrap.sh に --setup-labels オプションの記述がない"

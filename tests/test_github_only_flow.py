@@ -106,17 +106,12 @@ class TestScriptsHaveNoHardcodedValues:
 
     def test_setup_worktree_no_hardcoded_values(self):
         content = SETUP_WORKTREE.read_text()
-        assert "1222-takeshi" not in content, \
-            "setup-worktree.sh に特定のアカウント名がハードコードされている"
-        # コメント行以外に owner/repo 形式の文字列がないことを確認
-        non_comment_lines = [
-            line for line in content.splitlines()
-            if line.strip() and not line.strip().startswith("#")
-        ]
-        non_comment_text = "\n".join(non_comment_lines)
-        hardcoded = re.search(r'[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+-assistant', non_comment_text)
-        assert not hardcoded, \
-            f"setup-worktree.sh のコメント外にリポジトリ固有値がある: {hardcoded.group() if hardcoded else ''}"
+        # REPO="owner/repo" 形式の代入がないことを確認
+        assert not HARDCODED_REPO_PATTERN.search(content), \
+            "setup-worktree.sh にハードコードされた REPO 代入がある"
+        # --repo owner/repo フラグがないことを確認
+        assert not HARDCODED_REPO_FLAG_PATTERN.search(content), \
+            "setup-worktree.sh にハードコードされた --repo フラグがある"
 
     def test_gh_workflow_syntax(self):
         result = subprocess.run(

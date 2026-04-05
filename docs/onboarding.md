@@ -16,6 +16,20 @@ optional PMO profile を使う場合だけ、example config から local overrid
 ./scripts/bootstrap.sh --init-pmo-config
 ```
 
+## GitHub Labels のセットアップ
+
+開発 workflow に必要な GitHub Labels（`research`, `requirements`, `implementation`, `review-needed`, `approved`, `blocked`）を作成します。
+
+```bash
+# bootstrap と同時に実行
+./scripts/bootstrap.sh --setup-labels
+
+# または単独で実行
+./scripts/setup-labels.sh
+```
+
+`gh` 認証済みであることが前提です（`gh auth login`）。すでに同名ラベルが存在する場合はスキップされます。
+
 ## Doctor
 
 `doctor` は環境診断です。既存ファイルを変更しません。
@@ -43,6 +57,6 @@ python3 scripts/doctor.py
 
 ```bash
 python3 -m pip install -r requirements-dev.txt
-./scripts/bootstrap.sh
+./scripts/bootstrap.sh --setup-labels
 python3 scripts/doctor.py
 ```
