@@ -27,7 +27,7 @@ LOCAL_WORKSPACE_PATH_PATTERN = re.compile(r"/(?:mnt|Users)/[^\\s]+/workspace/ai-
 HARDCODED_REPO_ASSIGNMENT_PATTERN = re.compile(r'^\s*REPO="[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+"', re.MULTILINE)
 HARDCODED_GH_REPO_FLAG_PATTERN = re.compile(r"--repo\s+[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+")
 CONCRETE_GITHUB_REMOTE_PATTERN = re.compile(
-    r"(?:git@github\.com:|https://github\.com/)[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:\.git)?"
+    r"(?:git@github\.com:|https://github\.com/)(?!YOUR_)[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+(?:\.git)?"
 )
 
 

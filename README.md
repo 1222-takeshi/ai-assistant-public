@@ -1,5 +1,8 @@
 # ai-assistant
 
+[![CI](https://github.com/YOUR_ORG/YOUR_REPO/actions/workflows/test.yml/badge.svg)](https://github.com/YOUR_ORG/YOUR_REPO/actions/workflows/test.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+
 Claude Code / Codex 向けのマルチエージェント運用テンプレートです。  
 この OSS の core は、GitHub Issue 駆動の開発チーム workflow と `git worktree` ベースの並列開発です。  
 PMO 連携は optional profile として分離し、core Quickstart には含めません。
