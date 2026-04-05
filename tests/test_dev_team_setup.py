@@ -211,8 +211,9 @@ class TestDocumentation:
 
     def test_readme_mentions_new_team_files(self):
         content = README_MD.read_text(encoding="utf-8")
-        # README should mention the examples catalog or the examples table
-        assert "team-catalog" in content or "examples/dev-workflow" in content
+        # README must mention both the examples catalog and at least one specific team example
+        assert "team-catalog" in content
+        assert "examples/dev-workflow" in content
 
     def test_readme_separates_core_and_optional(self):
         content = README_MD.read_text(encoding="utf-8")
