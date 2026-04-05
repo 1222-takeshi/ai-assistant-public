@@ -95,6 +95,7 @@ Issue 作成 → Requirements Review → 実装 → PR 作成 → PR Review → 
 
 - `gh` と `git` だけで全ステップを実行できます
 - サンプル Issue / PR / review コメントは [examples/templates/](examples/templates/) にあります
+- エージェントチームが実際に動く様子は [examples/agent-team-demo/](examples/agent-team-demo/) を参照してください
 - Reviewer は超辛口（🔴必須 1件以上または🟡推奨 3件以上で即 NG・PR 即 Close）
 
 ## Development Team Workflow

@@ -237,3 +237,38 @@ class TestSetupLabelsScript:
         content = bootstrap.read_text()
         assert "setup-labels" in content, \
             "bootstrap.sh に --setup-labels オプションの記述がない"
+
+
+class TestAgentTeamDemo:
+    """#45: examples/agent-team-demo/ の存在確認"""
+
+    DEMO_DIR = REPO_ROOT / "examples" / "agent-team-demo"
+    EXPECTED_FILES = [
+        "README.md",
+        "01-requirements-issue.md",
+        "02-requirements-review-ok.md",
+        "03-pr-body.md",
+        "04-review-ok.md",
+        "05-review-ng.md",
+    ]
+
+    def test_demo_dir_exists(self):
+        assert self.DEMO_DIR.is_dir(), "examples/agent-team-demo/ が存在しない"
+
+    def test_all_demo_files_exist(self):
+        for name in self.EXPECTED_FILES:
+            path = self.DEMO_DIR / name
+            assert path.is_file(), f"examples/agent-team-demo/{name} が存在しない"
+
+    def test_readme_has_fiction_notice(self):
+        content = (self.DEMO_DIR / "README.md").read_text()
+        assert "フィクション" in content, "demo/README.md にフィクション注記がない"
+
+    def test_review_ng_mentions_immediate_close(self):
+        content = (self.DEMO_DIR / "05-review-ng.md").read_text()
+        assert "close" in content.lower(), "05-review-ng.md に close の記述がない"
+
+    def test_readme_links_to_demo(self):
+        readme = REPO_ROOT / "README.md"
+        content = readme.read_text()
+        assert "agent-team-demo" in content, "README.md から agent-team-demo へのリンクがない"
