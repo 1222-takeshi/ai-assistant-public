@@ -37,12 +37,16 @@ roles:
   reviewer:
     command: "/dev/review"
     capacity: 1
-    summary: "要件と PR をレビューし、承認ゲートを担当する。"
+    summary: "超辛口レビュアー。🔴必須1件でも即NG・PR即Closeを実施。修正ループは行わず、実装者に新規PR作成を求める。"
     lane: "quality"
     labels:
       - "review-needed"
       - "approved"
     worktree: "management clone"
+    review_policy:
+      ng_action: "PR を即 Close する（修正ループなし）"
+      ok_threshold: "🔴必須 0件 かつ 🟡推奨 2件以下"
+      ng_threshold: "🔴必須 1件以上 または 🟡推奨 3件以上"
 
   researcher-1:
     command: "/dev/research"
@@ -148,7 +152,9 @@ handoffs:
     to: "reviewer"
     trigger: "PR を作成しレビュー待ちに入ったとき"
     artifact: "review-needed ラベル付き PR と関連 Issue 番号"
+    on_ng: "Reviewer が PR を即 Close。実装者は新規ブランチ・新規 PR で再挑戦"
   - from: "implementer-2"
     to: "reviewer"
     trigger: "PR を作成しレビュー待ちに入ったとき"
     artifact: "review-needed ラベル付き PR と関連 Issue 番号"
+    on_ng: "Reviewer が PR を即 Close。実装者は新規ブランチ・新規 PR で再挑戦"

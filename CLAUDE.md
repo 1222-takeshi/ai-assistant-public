@@ -120,6 +120,8 @@ python3 scripts/validate-config.py --check-local
 - same identity の `COMMENTED` review は正式な approval gate とみなさない
 - PR review flow の詳細は `docs/pr-review-flow.md` を source of truth とする
 - 暫定運用でも `review-needed` は外し、`approved` は review 結果 OK を示すラベルとして使う
+- **Reviewer は超辛口**: 🔴必須 1件以上 または 🟡推奨 3件以上で即 NG
+- **NG 時は PR を即 Close**: 修正ループは行わない。実装者は新規ブランチ・新規 PR で再挑戦する
 
 ## Onboarding
 

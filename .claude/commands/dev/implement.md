@@ -114,12 +114,26 @@ Reviewerへ: PR #{pr_number} のレビューをお願いします。
 - 要件Issue: #{requirements_issue_number}
 ```
 
-### 7. レビュー指摘への対応
+### 7. レビュー結果への対応
 
-**NGの場合**:
-- Reviewerの指摘事項を確認する
-- 修正してコミット・プッシュする
-- Reviewerに再レビューを依頼する（修正ループ）
+**NGの場合（PR が Close された）**:
+- Reviewerの指摘事項を全て読み込み、根本原因を理解する
+- 既存の worktree・ブランチは削除する（Close された PR のブランチは使わない）
+- 新規ブランチを切り、ゼロから実装し直す
+- 新規 PR を作成してレビューに出す
+- **Close された PR を再オープンしない・同ブランチに push し直さない**
+
+```bash
+# 古い worktree を削除
+cd <repo-root>
+git worktree remove .claude/worktrees/impl-{N}
+git branch -D feat/{旧ブランチ名}
+
+# 新規ブランチで再実装
+./scripts/setup-worktree.sh impl-{N} feat/{機能名}-v2
+cd .claude/worktrees/impl-{N}
+# 実装し直し → PR 作成（手順 4〜6 を繰り返す）
+```
 
 **OKの場合**:
 - PRに `approved` ラベルが付いたことを確認
