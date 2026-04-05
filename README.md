@@ -37,6 +37,9 @@ ai-assistant/
 │   ├── notion.yaml
 │   └── confluence.yaml
 ├── docs/
+├── examples/
+│   ├── github-only-flow.md   ← GitHub-only happy path walkthrough
+│   └── templates/            ← Issue / PR / review サンプル成果物
 ├── scripts/
 ├── templates/
 └── tests/
@@ -78,6 +81,18 @@ python3 scripts/validate-config.py --tracked-only
 
 8. `.claude/team-topology.yaml` と `/dev/start-team` を source of truth として開発フローを開始する
 9. PMO profile が必要な場合だけ [docs/pmo-profile.md](docs/pmo-profile.md) を参照する
+
+## GitHub-Only Happy Path
+
+外部 SaaS なしで開発 workflow を完走したい場合は、**[examples/github-only-flow.md](examples/github-only-flow.md)** を参照してください。
+
+```
+Issue 作成 → Requirements Review → 実装 → PR 作成 → PR Review → Merge
+```
+
+- `gh` と `git` だけで全ステップを実行できます
+- サンプル Issue / PR / review コメントは [examples/templates/](examples/templates/) にあります
+- Reviewer は超辛口（🔴必須 1件以上または🟡推奨 3件以上で即 NG・PR 即 Close）
 
 ## Development Team Workflow
 
